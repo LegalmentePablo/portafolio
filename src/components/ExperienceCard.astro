@@ -1,0 +1,47 @@
+---
+interface Props {
+	title: string;
+	company: string;
+	period: string;
+	description: string;
+}
+
+const { title, company, period, description } = Astro.props;
+---
+
+<div class="experience-card">
+	<h3>{title}</h3>
+	<h4>{company}</h4>
+	<p class="period">{period}</p>
+	<p>{description}</p>
+</div>
+
+<style>
+	.experience-card {
+		background-color: rgba(var(--background), 0.8);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+	.experience-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+	}
+	h3 {
+		margin: 0;
+		font-size: 1.5rem;
+		color: rgb(var(--accent));
+	}
+	h4 {
+		margin: 0.5rem 0;
+		font-size: 1.2rem;
+		font-weight: 400;
+	}
+	.period {
+		font-size: 0.9rem;
+		color: rgba(var(--text), 0.7);
+		margin-bottom: 1rem;
+	}
+</style>

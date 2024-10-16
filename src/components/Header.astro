@@ -1,0 +1,52 @@
+---
+import ThemeSwitcher from './ThemeSwitcher.astro';
+---
+<header>
+	<nav>
+		<ul>
+			<li><a href="#inicio">Inicio</a></li>
+			<li><a href="#experiencia">Experiencia</a></li>
+			<li><a href="#proyectos">Proyectos</a></li>
+			<li><a href="#habilidades">Habilidades</a></li>
+			<li><a href="#contacto">Contacto</a></li>
+		</ul>
+	</nav>
+	<ThemeSwitcher />
+</header>
+
+<style>
+	header {
+		background-color: rgba(var(--background), 0.8);
+		backdrop-filter: blur(10px);
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 2rem;
+	}
+	nav {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1rem 0;
+	}
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		gap: 2rem;
+	}
+	a {
+		color: rgb(var(--text));
+		text-decoration: none;
+		font-weight: 400;
+		transition: color 0.3s ease;
+	}
+	a:hover {
+		color: rgb(var(--accent));
+	}
+</style>

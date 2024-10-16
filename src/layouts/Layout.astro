@@ -1,0 +1,68 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Portafolio de desarrollador" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<slot />
+		<script>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+		
+			if (theme === 'light') {
+				document.documentElement.classList.remove('dark');
+			} else {
+				document.documentElement.classList.add('dark');
+			}
+
+			window.localStorage.setItem('theme', theme);
+		</script>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 0, 122, 255;
+		--accent-light: 88, 86, 214;
+		--background: 255, 255, 255;
+		--text: 0, 0, 0;
+	}
+	:root.dark {
+		--accent: 10, 132, 255;
+		--accent-light: 94, 92, 230;
+		--background: 0, 0, 0;
+		--text: 255, 255, 255;
+	}
+	html {
+		font-family: 'SF Pro Display', system-ui, sans-serif;
+		background: rgb(var(--background));
+		color: rgb(var(--text));
+	}
+	body {
+		margin: 0;
+		padding: 0;
+	}
+	* {
+		box-sizing: border-box;
+	}
+</style>

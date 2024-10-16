@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import AboutMe from '../components/AboutMe.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
+---
+
+<Layout title="Mi Portafolio - Desarrollador">
+	<Header />
+	<main>
+		<section id="inicio" class="hero">
+			<h1>Hola, soy <span class="highlight">Pablo Buitrago Mejia</span></h1>
+			<p>Desarrollador de software apasionado por crear soluciones innovadoras</p>
+		</section>
+
+		<AboutMe />
+
+		<section id="experiencia">
+			<h2>Experiencia</h2>
+			<ExperienceCard
+				title="Desarrollador Full Stack"
+				company="Empresa Innovadora"
+				period="Enero 2020 - Presente"
+				description="Desarrollo de aplicaciones web utilizando React, Node.js y MongoDB. Implementación de arquitecturas escalables y optimización de rendimiento."
+			/>
+			<ExperienceCard
+				title="Desarrollador Frontend"
+				company="Startup Tecnológica"
+				period="Junio 2018 - Diciembre 2019"
+				description="Creación de interfaces de usuario responsivas y atractivas utilizando HTML, CSS y JavaScript. Colaboración en el diseño y desarrollo de nuevas características."
+			/>
+		</section>
+
+		<section id="proyectos">
+			<h2>Proyectos Destacados</h2>
+			<div class="project-grid">
+				<div class="project-card">
+					<h3>Aplicación de Gestión de Tareas</h3>
+					<p>Una aplicación web para gestionar tareas y proyectos, desarrollada con React y Firebase.</p>
+					<a href="https://github.com/tu-usuario/proyecto-tareas" target="_blank" rel="noopener noreferrer" class="project-link">Ver en GitHub</a>
+				</div>
+				<div class="project-card">
+					<h3>E-commerce de Productos Ecológicos</h3>
+					<p>Plataforma de comercio electrónico construida con Node.js, Express y MongoDB.</p>
+					<a href="https://github.com/tu-usuario/ecommerce-eco" target="_blank" rel="noopener noreferrer" class="project-link">Ver en GitHub</a>
+				</div>
+			</div>
+		</section>
+
+		<section id="habilidades">
+			<h2>Habilidades Técnicas</h2>
+			<ul class="skills-list">
+				<li>JavaScript (ES6+)</li>
+				<li>React.js</li>
+				<li>Node.js</li>
+				<li>Express.js</li>
+				<li>MongoDB</li>
+				<li>HTML5 & CSS3</li>
+				<li>Git & GitHub</li>
+				<li>RESTful APIs</li>
+			</ul>
+		</section>
+
+		<section id="contacto" class="contact-section">
+			<h2>Contacto</h2>
+			<p class="contact-text">¿Interesado en trabajar juntos? ¡Contáctame!</p>
+			<a href="https://www.linkedin.com/in/tu-perfil" target="_blank" rel="noopener noreferrer" class="contact-button">Conectar en LinkedIn</a>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 6rem 2rem 2rem;
+	}
+	.hero {
+		text-align: center;
+		padding: 4rem 0;
+	}
+	h1 {
+		font-size: 3rem;
+		font-weight: 600;
+		margin-bottom: 1rem;
+	}
+	.highlight {
+		color: rgb(var(--accent));
+	}
+	section {
+		margin-bottom: 4rem;
+	}
+	h2 {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+		text-align: center;
+	}
+	.project-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+	}
+	.project-card {
+		background-color: rgba(var(--background), 0.8);
+		border-radius: 12px;
+		padding: 1.5rem;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+	.project-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+	}
+	.project-link {
+		display: inline-block;
+		margin-top: 1rem;
+		color: rgb(var(--accent));
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.project-link:hover {
+		text-decoration: underline;
+	}
+	.skills-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 1rem;
+		padding: 0;
+		list-style-type: none;
+	}
+	.skills-list li {
+		background-color: rgba(var(--accent), 0.1);
+		color: rgb(var(--accent));
+		padding: 0.5rem 1rem;
+		border-radius: 20px;
+		font-size: 0.9rem;
+	}
+	.contact-section {
+		text-align: center;
+	}
+	.contact-text {
+		margin-bottom: 1.5rem;
+	}
+	.contact-button {
+		display: inline-block;
+		background-color: rgb(var(--accent));
+		color: rgb(var(--background));
+		padding: 0.8rem 1.5rem;
+		border-radius: 30px;
+		text-decoration: none;
+		font-weight: 600;
+		transition: background-color 0.3s ease;
+	}
+	.contact-button:hover {
+		background-color: rgb(var(--accent-light));
+	}
+</style>
