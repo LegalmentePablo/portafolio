@@ -28,3 +28,9 @@ bun run build
 bun run preview
 bun run astro -- --help
 ```
+
+## Demo en produccion
+
+Puedes ver el portafolio publicado en Vercel aqui:
+
+- https://portafolio-weld-omega.vercel.app
