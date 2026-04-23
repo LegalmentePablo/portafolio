@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import AboutMe from '../../components/AboutMe.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import ExperienceSection from '../../components/sections/ExperienceSection.astro';
+import CaseStudiesSection from '../../components/sections/CaseStudiesSection.astro';
+import EducationSection from '../../components/sections/EducationSection.astro';
+import ProjectsSection from '../../components/sections/ProjectsSection.astro';
+import SkillsSection from '../../components/sections/SkillsSection.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import { portfolioDataEn } from '../../data/portfolio.en';
+---
+
+<Layout title={portfolioDataEn.meta.title} lang="en">
+  <Header
+    links={portfolioDataEn.navigation}
+    currentLang="en"
+    menuLabel={portfolioDataEn.ui.header.menu}
+    openMenuLabel={portfolioDataEn.ui.header.openMenu}
+    closeMenuLabel={portfolioDataEn.ui.header.closeMenu}
+  />
+  <main>
+    <HeroSection
+      title={portfolioDataEn.meta.heroTitle}
+      highlight={portfolioDataEn.meta.heroHighlight}
+      subtitle={portfolioDataEn.meta.heroSubtitle}
+      valueProposition={portfolioDataEn.meta.valueProposition}
+      location={portfolioDataEn.meta.location}
+      primaryCta={portfolioDataEn.meta.primaryCta}
+      secondaryCta={portfolioDataEn.meta.secondaryCta}
+    />
+
+    <AboutMe
+      title={portfolioDataEn.about.title}
+      summary={portfolioDataEn.about.summary}
+      education={portfolioDataEn.about.education}
+    />
+
+    <ExperienceSection items={portfolioDataEn.experience} title={portfolioDataEn.ui.sections.experience} />
+    <CaseStudiesSection
+      items={portfolioDataEn.caseStudies}
+      title={portfolioDataEn.ui.sections.professionalProjects}
+      roleLabel={portfolioDataEn.ui.caseStudies.roleLabel}
+      stackLabel={portfolioDataEn.ui.caseStudies.stackLabel}
+      pageLabel={portfolioDataEn.ui.caseStudies.pageLabel}
+      demoLabel={portfolioDataEn.ui.caseStudies.demoLabel}
+    />
+    <EducationSection items={portfolioDataEn.education} title={portfolioDataEn.ui.sections.education} />
+    <ProjectsSection
+      items={portfolioDataEn.projects}
+      title={portfolioDataEn.ui.sections.personalProjects}
+      ctaLabel={portfolioDataEn.ui.projects.ctaLabel}
+    />
+    <SkillsSection items={portfolioDataEn.skills} title={portfolioDataEn.ui.sections.skills} />
+    <ContactSection
+      title={portfolioDataEn.contact.title}
+      message={portfolioDataEn.contact.message}
+      email={portfolioDataEn.contact.email}
+      phone={portfolioDataEn.contact.phone}
+      links={portfolioDataEn.contact.links}
+      emailLabel={portfolioDataEn.ui.contact.emailLabel}
+      phoneLabel={portfolioDataEn.ui.contact.phoneLabel}
+    />
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4.75rem 2rem 2rem;
+  }
+
+  @media (max-width: 900px) {
+    main {
+      padding: 4.25rem 1rem 2rem;
+    }
+  }
+</style>

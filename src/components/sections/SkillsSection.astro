@@ -1,0 +1,46 @@
+---
+interface Props {
+  items: readonly string[];
+  title: string;
+}
+
+const { items, title } = Astro.props;
+---
+
+<section id="habilidades">
+  <h2>{title}</h2>
+  <ul class="skills-list">
+    {
+      items.map((skill) => <li>{skill}</li>)
+    }
+  </ul>
+</section>
+
+<style>
+  section {
+    margin-bottom: 4rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .skills-list li {
+    background-color: rgba(var(--accent), 0.1);
+    color: rgb(var(--accent));
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+</style>

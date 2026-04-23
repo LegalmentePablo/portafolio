@@ -1,0 +1,119 @@
+---
+interface Props {
+  title: string;
+  highlight: string;
+  subtitle: string;
+  valueProposition: string;
+  location: string;
+  primaryCta: {
+    label: string;
+    href: string;
+    icon: string;
+  };
+  secondaryCta: {
+    label: string;
+    href: string;
+    icon: string;
+  };
+}
+
+const { title, highlight, subtitle, valueProposition, location, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section id="inicio" class="hero">
+  <h1>
+    {title} <span class="highlight">{highlight}</span>
+  </h1>
+  <p>{subtitle}</p>
+  <p class="value">{valueProposition}</p>
+  <p class="location">{location}</p>
+  <div class="hero-cta">
+    <a href={primaryCta.href} target="_blank" rel="noopener noreferrer" class="cta primary">
+      <span class="cta-icon" style={`--icon-url: url('${primaryCta.icon}')`} aria-hidden="true"></span>
+      {primaryCta.label}
+    </a>
+    <a href={secondaryCta.href} target="_blank" rel="noopener noreferrer" class="cta secondary">
+      <span class="cta-icon" style={`--icon-url: url('${secondaryCta.icon}')`} aria-hidden="true"></span>
+      {secondaryCta.label}
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 2.2rem 0 3.4rem;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      padding: 1.8rem 0 2.8rem;
+    }
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .highlight {
+    color: rgb(var(--accent));
+  }
+
+  .value {
+    max-width: 760px;
+    margin: 1rem auto 0;
+    line-height: 1.5;
+    color: rgba(var(--text), 0.9);
+  }
+
+  .location {
+    margin-top: 0.6rem;
+    color: rgba(var(--text), 0.75);
+    font-weight: 600;
+  }
+
+  .hero-cta {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    padding: 0.7rem 1.15rem;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .cta-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask-image: var(--icon-url);
+    mask-image: var(--icon-url);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .cta.primary {
+    background-color: rgb(var(--accent));
+    color: rgb(var(--background));
+  }
+
+  .cta.secondary {
+    background-color: rgb(var(--accent));
+    color: rgb(var(--background));
+  }
+</style>

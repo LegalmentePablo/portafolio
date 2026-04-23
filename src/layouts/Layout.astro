@@ -1,0 +1,88 @@
+---
+interface Props {
+	title: string;
+	lang?: 'es' | 'en';
+}
+
+const { title, lang = 'es' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Portafolio de desarrollador" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<slot />
+		<script>
+			const theme = (() => {
+				const savedTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+				if (savedTheme) {
+					return savedTheme;
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+		
+			if (theme === 'light') {
+				document.documentElement.classList.remove('dark');
+			} else {
+				document.documentElement.classList.add('dark');
+			}
+
+			window.localStorage.setItem('theme', theme);
+		</script>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 0, 122, 255;
+		--accent-light: 88, 86, 214;
+		--background: 255, 255, 255;
+		--surface: 248, 249, 251;
+		--text: 0, 0, 0;
+		--shadow-elevation-1: 0 4px 10px rgba(15, 23, 42, 0.08);
+		--shadow-elevation-2: 0 10px 24px rgba(15, 23, 42, 0.16);
+	}
+	:root.dark {
+		--accent: 10, 132, 255;
+		--accent-light: 94, 92, 230;
+		--background: 0, 0, 0;
+		--surface: 20, 20, 24;
+		--text: 255, 255, 255;
+		--shadow-elevation-1: 0 10px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+		--shadow-elevation-2: 0 16px 34px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.14);
+	}
+	html {
+		font-family: 'SF Pro Display', system-ui, sans-serif;
+		background: rgb(var(--background));
+		color: rgb(var(--text));
+		scroll-behavior: smooth;
+	}
+
+	section[id] {
+		scroll-margin-top: 6.5rem;
+	}
+
+	@media (max-width: 900px) {
+		section[id] {
+			scroll-margin-top: 5.75rem;
+		}
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+	}
+	* {
+		box-sizing: border-box;
+	}
+</style>

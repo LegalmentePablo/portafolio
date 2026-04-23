@@ -1,0 +1,136 @@
+---
+import ThemeSwitcher from './ThemeSwitcher.astro';
+import './Header.css';
+import type { NavLink } from '../data/portfolio';
+
+interface Props {
+	links: NavLink[];
+	currentLang: 'es' | 'en';
+	menuLabel: string;
+	openMenuLabel: string;
+	closeMenuLabel: string;
+}
+
+const { links, currentLang, menuLabel, openMenuLabel, closeMenuLabel } = Astro.props;
+---
+<header
+	class="site-header"
+	data-open-menu-label={openMenuLabel}
+	data-close-menu-label={closeMenuLabel}
+>
+	<button
+		type="button"
+		class="menu-toggle"
+		aria-label={openMenuLabel}
+		aria-expanded="false"
+		aria-controls="mobile-nav"
+		data-menu-toggle
+	>
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+
+	<nav class="desktop-nav" aria-label="Navegación principal">
+		<ul>
+			{
+				links.map((link) => (
+					<li><a href={link.href}>{link.label}</a></li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<div class="header-actions">
+		<nav class="lang-switch" aria-label="Language switcher">
+			<a href="/" class={currentLang === 'es' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'es' ? 'page' : undefined}>ES</a>
+			<a href="/en/" class={currentLang === 'en' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'en' ? 'page' : undefined}>EN</a>
+		</nav>
+		<ThemeSwitcher />
+	</div>
+</header>
+
+<div class="mobile-overlay" data-mobile-overlay hidden></div>
+
+<nav id="mobile-nav" class="mobile-nav" aria-label="Menú móvil" aria-hidden="true" data-mobile-nav>
+	<div class="mobile-nav-top">
+		<strong>{menuLabel}</strong>
+		<button type="button" class="close-menu" aria-label={closeMenuLabel} data-menu-close>X</button>
+	</div>
+	<ul>
+		{
+			links.map((link) => (
+				<li><a href={link.href} class="mobile-nav-link" data-mobile-link>{link.label}</a></li>
+			))
+		}
+	</ul>
+	<div class="mobile-lang-switch" aria-label="Language switcher">
+		<a href="/" class={currentLang === 'es' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'es' ? 'page' : undefined}>ES</a>
+		<a href="/en/" class={currentLang === 'en' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'en' ? 'page' : undefined}>EN</a>
+	</div>
+</nav>
+
+<script>
+	const siteHeader = document.querySelector<HTMLElement>('.site-header');
+	const openLabel = siteHeader?.dataset.openMenuLabel ?? 'Open menu';
+	const closeLabel = siteHeader?.dataset.closeMenuLabel ?? 'Close menu';
+
+	const toggleButton = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+	const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+	const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
+	const overlay = document.querySelector<HTMLElement>('[data-mobile-overlay]');
+	const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('[data-mobile-link]');
+
+	const syncActiveMobileLink = () => {
+		const currentHash = window.location.hash || '#inicio';
+
+		mobileLinks.forEach((link) => {
+			const isActive = link.getAttribute('href') === currentHash;
+			link.classList.toggle('is-active', isActive);
+			if (isActive) {
+				link.setAttribute('aria-current', 'page');
+			} else {
+				link.removeAttribute('aria-current');
+			}
+		});
+	};
+
+	const setMenuState = (isOpen: boolean) => {
+		if (!toggleButton || !mobileNav || !overlay) return;
+
+		toggleButton.setAttribute('aria-expanded', String(isOpen));
+		toggleButton.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
+		toggleButton.classList.toggle('is-open', isOpen);
+		mobileNav.setAttribute('aria-hidden', String(!isOpen));
+		mobileNav.classList.toggle('is-open', isOpen);
+		overlay.hidden = !isOpen;
+		document.documentElement.classList.toggle('menu-open', isOpen);
+	};
+
+	toggleButton?.addEventListener('click', () => {
+		const isOpen = toggleButton.getAttribute('aria-expanded') === 'true';
+		setMenuState(!isOpen);
+	});
+
+	closeButton?.addEventListener('click', () => setMenuState(false));
+	overlay?.addEventListener('click', () => setMenuState(false));
+
+	mobileLinks.forEach((link) => {
+		link.addEventListener('click', () => {
+			syncActiveMobileLink();
+			setMenuState(false);
+		});
+	});
+
+	window.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') setMenuState(false);
+	});
+
+	window.addEventListener('resize', () => {
+		if (window.innerWidth > 900) setMenuState(false);
+	});
+
+	window.addEventListener('hashchange', syncActiveMobileLink);
+
+	syncActiveMobileLink();
+</script>

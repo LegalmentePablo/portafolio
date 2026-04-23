@@ -1,0 +1,148 @@
+---
+import type { ContactLink } from '../../data/portfolio';
+
+interface Props {
+  title: string;
+  message: string;
+  email: string;
+  phone: string;
+  links: ContactLink[];
+  emailLabel: string;
+  phoneLabel: string;
+}
+
+const { title, message, email, phone, links, emailLabel, phoneLabel } = Astro.props;
+---
+
+<section id="contacto" class="contact-section">
+  <h2>{title}</h2>
+  <p class="contact-text">{message}</p>
+  <div class="contact-card">
+    <div class="contact-meta-grid">
+      <p class="contact-meta">
+        <span class="meta-label">{emailLabel}</span>
+        <a href={`mailto:${email}`}>{email}</a>
+      </p>
+      <p class="contact-meta">
+        <span class="meta-label">{phoneLabel}</span>
+        <a href={`tel:${phone.replace(/\s+/g, '')}`}>{phone}</a>
+      </p>
+    </div>
+
+    <div class="contact-actions">
+      {
+        links.map((link) => (
+          <a href={link.href} target="_blank" rel="noopener noreferrer" class="contact-button">
+            <img src={link.icon} alt={link.label} class="contact-icon" />
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .contact-text {
+    margin-bottom: 1.2rem;
+  }
+
+  .contact-card {
+    max-width: 760px;
+    margin: 0 auto;
+    background-color: rgb(var(--surface));
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-elevation-1);
+  }
+
+  .contact-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-meta {
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    border-radius: 10px;
+    background-color: rgba(var(--accent), 0.08);
+    color: rgba(var(--text), 0.86);
+    text-align: left;
+  }
+
+  .meta-label {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    opacity: 0.72;
+    margin-bottom: 0.2rem;
+  }
+
+  .contact-meta a {
+    color: rgb(var(--accent));
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .contact-meta a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgb(var(--accent));
+    color: rgb(var(--background));
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin: 0 0.4rem;
+  }
+
+  .contact-button:hover {
+    background-color: rgb(var(--accent-light));
+  }
+
+  .contact-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  :global(html:not(.dark)) .contact-icon {
+    filter: brightness(0) invert(1);
+  }
+
+  :global(.dark) .contact-icon {
+    filter: none;
+  }
+
+  @media (max-width: 720px) {
+    .contact-meta-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import AboutMe from '../components/AboutMe.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import ExperienceSection from '../components/sections/ExperienceSection.astro';
+import CaseStudiesSection from '../components/sections/CaseStudiesSection.astro';
+import EducationSection from '../components/sections/EducationSection.astro';
+import ProjectsSection from '../components/sections/ProjectsSection.astro';
+import SkillsSection from '../components/sections/SkillsSection.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+import { portfolioData } from '../data/portfolio';
+---
+
+<Layout title={portfolioData.meta.title} lang="es">
+	<Header
+		links={portfolioData.navigation}
+		currentLang="es"
+		menuLabel={portfolioData.ui.header.menu}
+		openMenuLabel={portfolioData.ui.header.openMenu}
+		closeMenuLabel={portfolioData.ui.header.closeMenu}
+	/>
+	<main>
+		<HeroSection
+			title={portfolioData.meta.heroTitle}
+			highlight={portfolioData.meta.heroHighlight}
+			subtitle={portfolioData.meta.heroSubtitle}
+			valueProposition={portfolioData.meta.valueProposition}
+			location={portfolioData.meta.location}
+			primaryCta={portfolioData.meta.primaryCta}
+			secondaryCta={portfolioData.meta.secondaryCta}
+		/>
+
+		<AboutMe
+			title={portfolioData.about.title}
+			summary={portfolioData.about.summary}
+			education={portfolioData.about.education}
+		/>
+
+		<ExperienceSection items={portfolioData.experience} title={portfolioData.ui.sections.experience} />
+		<CaseStudiesSection
+			items={portfolioData.caseStudies}
+			title={portfolioData.ui.sections.professionalProjects}
+			roleLabel={portfolioData.ui.caseStudies.roleLabel}
+			stackLabel={portfolioData.ui.caseStudies.stackLabel}
+			pageLabel={portfolioData.ui.caseStudies.pageLabel}
+			demoLabel={portfolioData.ui.caseStudies.demoLabel}
+		/>
+		<EducationSection items={portfolioData.education} title={portfolioData.ui.sections.education} />
+		<ProjectsSection
+			items={portfolioData.projects}
+			title={portfolioData.ui.sections.personalProjects}
+			ctaLabel={portfolioData.ui.projects.ctaLabel}
+		/>
+		<SkillsSection items={portfolioData.skills} title={portfolioData.ui.sections.skills} />
+		<ContactSection
+			title={portfolioData.contact.title}
+			message={portfolioData.contact.message}
+			email={portfolioData.contact.email}
+			phone={portfolioData.contact.phone}
+			links={portfolioData.contact.links}
+			emailLabel={portfolioData.ui.contact.emailLabel}
+			phoneLabel={portfolioData.ui.contact.phoneLabel}
+		/>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 4.75rem 2rem 2rem;
+	}
+
+	@media (max-width: 900px) {
+		main {
+			padding: 4.25rem 1rem 2rem;
+		}
+	}
+</style>

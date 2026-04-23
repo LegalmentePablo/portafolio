@@ -1,0 +1,37 @@
+---
+import ExperienceCard from '../ExperienceCard.astro';
+import type { ExperienceItem } from '../../data/portfolio';
+
+interface Props {
+  items: ExperienceItem[];
+  title: string;
+}
+
+const { items, title } = Astro.props;
+---
+
+<section id="experiencia">
+  <h2>{title}</h2>
+  {
+    items.map((item) => (
+      <ExperienceCard
+        title={item.title}
+        company={item.company}
+        period={item.period}
+        description={item.description}
+      />
+    ))
+  }
+</section>
+
+<style>
+  section {
+    margin-bottom: 4rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+</style>
