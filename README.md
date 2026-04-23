@@ -33,4 +33,4 @@ bun run astro -- --help
 
 Puedes ver el portafolio publicado en Vercel aqui:
 
-- https://portafolio-weld-omega.vercel.app
+- https://portafolio-tau-ruddy-65.vercel.app/
