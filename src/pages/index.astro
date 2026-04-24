@@ -12,7 +12,13 @@ import ContactSection from '../components/sections/ContactSection.astro';
 import { portfolioData } from '../data/portfolio';
 ---
 
-<Layout title={portfolioData.meta.title} lang="es">
+<Layout
+	title={portfolioData.meta.title}
+	description={portfolioData.meta.description}
+	canonicalUrl={portfolioData.meta.siteUrl}
+	ogImageUrl={`${portfolioData.meta.siteUrl}${portfolioData.meta.ogImagePath}`}
+	lang="es"
+>
 	<Header
 		links={portfolioData.navigation}
 		currentLang="es"
@@ -24,6 +30,7 @@ import { portfolioData } from '../data/portfolio';
 		<HeroSection
 			title={portfolioData.meta.heroTitle}
 			highlight={portfolioData.meta.heroHighlight}
+			badgeLabel={portfolioData.meta.heroBadge}
 			subtitle={portfolioData.meta.heroSubtitle}
 			valueProposition={portfolioData.meta.valueProposition}
 			location={portfolioData.meta.location}
@@ -41,6 +48,7 @@ import { portfolioData } from '../data/portfolio';
 		<CaseStudiesSection
 			items={portfolioData.caseStudies}
 			title={portfolioData.ui.sections.professionalProjects}
+			caseTagLabel={portfolioData.ui.caseStudies.caseTagLabel}
 			roleLabel={portfolioData.ui.caseStudies.roleLabel}
 			stackLabel={portfolioData.ui.caseStudies.stackLabel}
 			pageLabel={portfolioData.ui.caseStudies.pageLabel}
@@ -50,9 +58,14 @@ import { portfolioData } from '../data/portfolio';
 		<ProjectsSection
 			items={portfolioData.projects}
 			title={portfolioData.ui.sections.personalProjects}
+			projectTagLabel={portfolioData.ui.projects.projectTagLabel}
 			ctaLabel={portfolioData.ui.projects.ctaLabel}
 		/>
-		<SkillsSection items={portfolioData.skills} title={portfolioData.ui.sections.skills} />
+		<SkillsSection
+			items={portfolioData.skills}
+			title={portfolioData.ui.sections.skills}
+			categoryLabels={portfolioData.ui.skills}
+		/>
 		<ContactSection
 			title={portfolioData.contact.title}
 			message={portfolioData.contact.message}

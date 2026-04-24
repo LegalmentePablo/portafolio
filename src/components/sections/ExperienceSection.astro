@@ -12,16 +12,18 @@ const { items, title } = Astro.props;
 
 <section id="experiencia">
   <h2>{title}</h2>
-  {
-    items.map((item) => (
-      <ExperienceCard
-        title={item.title}
-        company={item.company}
-        period={item.period}
-        description={item.description}
-      />
-    ))
-  }
+  <div class="timeline">
+    {
+      items.map((item) => (
+        <ExperienceCard
+          title={item.title}
+          company={item.company}
+          period={item.period}
+          description={item.description}
+        />
+      ))
+    }
+  </div>
 </section>
 
 <style>
@@ -33,5 +35,36 @@ const { items, title } = Astro.props;
     font-size: 2rem;
     margin-bottom: 2rem;
     text-align: center;
+  }
+
+  .timeline {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.55rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      180deg,
+      rgba(var(--accent), 0.85),
+      rgba(var(--accent-2), 0.25)
+    );
+  }
+
+  @media (max-width: 720px) {
+    .timeline {
+      padding-left: 1.4rem;
+    }
+
+    .timeline::before {
+      left: 0.32rem;
+    }
   }
 </style>

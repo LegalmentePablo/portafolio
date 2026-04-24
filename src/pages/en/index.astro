@@ -12,7 +12,13 @@ import ContactSection from '../../components/sections/ContactSection.astro';
 import { portfolioDataEn } from '../../data/portfolio.en';
 ---
 
-<Layout title={portfolioDataEn.meta.title} lang="en">
+<Layout
+  title={portfolioDataEn.meta.title}
+  description={portfolioDataEn.meta.description}
+  canonicalUrl={`${portfolioDataEn.meta.siteUrl}/en/`}
+  ogImageUrl={`${portfolioDataEn.meta.siteUrl}${portfolioDataEn.meta.ogImagePath}`}
+  lang="en"
+>
   <Header
     links={portfolioDataEn.navigation}
     currentLang="en"
@@ -24,6 +30,7 @@ import { portfolioDataEn } from '../../data/portfolio.en';
     <HeroSection
       title={portfolioDataEn.meta.heroTitle}
       highlight={portfolioDataEn.meta.heroHighlight}
+      badgeLabel={portfolioDataEn.meta.heroBadge}
       subtitle={portfolioDataEn.meta.heroSubtitle}
       valueProposition={portfolioDataEn.meta.valueProposition}
       location={portfolioDataEn.meta.location}
@@ -41,6 +48,7 @@ import { portfolioDataEn } from '../../data/portfolio.en';
     <CaseStudiesSection
       items={portfolioDataEn.caseStudies}
       title={portfolioDataEn.ui.sections.professionalProjects}
+      caseTagLabel={portfolioDataEn.ui.caseStudies.caseTagLabel}
       roleLabel={portfolioDataEn.ui.caseStudies.roleLabel}
       stackLabel={portfolioDataEn.ui.caseStudies.stackLabel}
       pageLabel={portfolioDataEn.ui.caseStudies.pageLabel}
@@ -50,9 +58,14 @@ import { portfolioDataEn } from '../../data/portfolio.en';
     <ProjectsSection
       items={portfolioDataEn.projects}
       title={portfolioDataEn.ui.sections.personalProjects}
+      projectTagLabel={portfolioDataEn.ui.projects.projectTagLabel}
       ctaLabel={portfolioDataEn.ui.projects.ctaLabel}
     />
-    <SkillsSection items={portfolioDataEn.skills} title={portfolioDataEn.ui.sections.skills} />
+    <SkillsSection
+      items={portfolioDataEn.skills}
+      title={portfolioDataEn.ui.sections.skills}
+      categoryLabels={portfolioDataEn.ui.skills}
+    />
     <ContactSection
       title={portfolioDataEn.contact.title}
       message={portfolioDataEn.contact.message}

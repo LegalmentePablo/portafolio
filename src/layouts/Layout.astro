@@ -2,21 +2,55 @@
 interface Props {
 	title: string;
 	lang?: 'es' | 'en';
+	description?: string;
+	canonicalUrl?: string;
+	ogImageUrl?: string;
 }
 
-const { title, lang = 'es' } = Astro.props;
+const {
+	title,
+	lang = 'es',
+	description = 'Portafolio de desarrollador',
+	canonicalUrl,
+	ogImageUrl
+} = Astro.props;
+
+const defaultSiteUrl = 'https://portafolio-weld-omega.vercel.app';
+const canonical = canonicalUrl ?? `${defaultSiteUrl}${lang === 'en' ? '/en/' : '/'}`;
+const ogImage = ogImageUrl ?? `${defaultSiteUrl}/favicon.svg`;
 ---
 
 <!doctype html>
 <html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Portafolio de desarrollador" />
+		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonical} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Pablo Buitrago Mejia" />
+		<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_CO'} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content={title} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+
 		<title>{title}</title>
-		<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<slot />
@@ -40,32 +74,71 @@ const { title, lang = 'es' } = Astro.props;
 
 			window.localStorage.setItem('theme', theme);
 		</script>
+		<script>
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const revealTargets = Array.from(document.querySelectorAll<HTMLElement>('main > *'));
+
+			if (!reduceMotion) {
+				revealTargets.forEach((element, index) => {
+					element.classList.add('reveal');
+					element.style.setProperty('--reveal-delay', `${Math.min(index * 70, 360)}ms`);
+				});
+
+				const observer = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting) {
+								entry.target.classList.add('is-visible');
+								observer.unobserve(entry.target);
+							}
+						});
+					},
+					{ threshold: 0.14, rootMargin: '0px 0px -9% 0px' }
+				);
+
+				revealTargets.forEach((element) => observer.observe(element));
+			}
+		</script>
 	</body>
 </html>
 <style is:global>
 	:root {
-		--accent: 0, 122, 255;
-		--accent-light: 88, 86, 214;
-		--background: 255, 255, 255;
-		--surface: 248, 249, 251;
-		--text: 0, 0, 0;
-		--shadow-elevation-1: 0 4px 10px rgba(15, 23, 42, 0.08);
-		--shadow-elevation-2: 0 10px 24px rgba(15, 23, 42, 0.16);
+		--accent: 37, 99, 235;
+		--accent-2: 59, 130, 246;
+		--accent-light: 96, 165, 250;
+		--background: 249, 251, 252;
+		--surface: 255, 255, 255;
+		--text: 15, 23, 42;
+		--muted: 71, 85, 105;
+		--line: 15, 23, 42;
+		--shadow-elevation-1: 0 12px 30px rgba(15, 23, 42, 0.07);
+		--shadow-elevation-2: 0 18px 44px rgba(15, 23, 42, 0.14);
 	}
 	:root.dark {
-		--accent: 10, 132, 255;
-		--accent-light: 94, 92, 230;
-		--background: 0, 0, 0;
-		--surface: 20, 20, 24;
-		--text: 255, 255, 255;
-		--shadow-elevation-1: 0 10px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
-		--shadow-elevation-2: 0 16px 34px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.14);
+		--accent: 96, 165, 250;
+		--accent-2: 147, 197, 253;
+		--accent-light: 191, 219, 254;
+		--background: 4, 12, 24;
+		--surface: 12, 22, 37;
+		--text: 230, 238, 247;
+		--muted: 148, 163, 184;
+		--line: 230, 238, 247;
+		--shadow-elevation-1: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
+		--shadow-elevation-2: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.12);
 	}
 	html {
-		font-family: 'SF Pro Display', system-ui, sans-serif;
+		font-family: 'Manrope', system-ui, sans-serif;
 		background: rgb(var(--background));
 		color: rgb(var(--text));
 		scroll-behavior: smooth;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: 'Space Grotesk', 'Manrope', system-ui, sans-serif;
+		letter-spacing: -0.02em;
 	}
 
 	section[id] {
@@ -81,6 +154,40 @@ const { title, lang = 'es' } = Astro.props;
 	body {
 		margin: 0;
 		padding: 0;
+		background:
+			radial-gradient(circle at 8% 8%, rgba(var(--accent), 0.16), transparent 36%),
+			radial-gradient(circle at 92% 14%, rgba(var(--accent-2), 0.14), transparent 34%),
+			rgb(var(--background));
+	}
+
+	a {
+		color: inherit;
+	}
+
+	p {
+		color: rgba(var(--text), 0.88);
+	}
+
+	.reveal {
+		opacity: 0;
+		transform: translateY(20px);
+		transition:
+			opacity 0.7s ease var(--reveal-delay, 0ms),
+			transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--reveal-delay, 0ms);
+	}
+
+	.reveal.is-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal,
+		.reveal.is-visible {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
 	}
 	* {
 		box-sizing: border-box;

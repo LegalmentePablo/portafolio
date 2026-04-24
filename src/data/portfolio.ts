@@ -63,8 +63,13 @@ export interface ContactLink {
 export const portfolioData = {
   meta: {
     title: 'Pablo Buitrago Mejia | Software Development Engineer',
+    description:
+      'Portafolio de Pablo Buitrago Mejia, ingeniero de sistemas con enfoque en desarrollo de producto, cloud y datos.',
+    siteUrl: 'https://portafolio-weld-omega.vercel.app',
+    ogImagePath: '/og-cover.png',
     heroTitle: 'Hola, soy',
     heroHighlight: 'Pablo Buitrago Mejia',
+    heroBadge: '',
     heroSubtitle: 'Ingeniero de Sistemas enfocado en desarrollo de producto, cloud y datos',
     valueProposition:
       'Construyo soluciones robustas de principio a fin, con enfoque en calidad, responsabilidad y resultados medibles para el negocio.',
@@ -122,13 +127,21 @@ export const portfolioData = {
       skills: 'Habilidades Técnicas'
     },
     caseStudies: {
+      caseTagLabel: 'Caso real',
       roleLabel: 'Mi aporte',
       stackLabel: 'Tecnologías',
       pageLabel: 'Página',
       demoLabel: 'Demo'
     },
     projects: {
+      projectTagLabel: 'Proyecto personal',
       ctaLabel: 'Ver en GitHub'
+    },
+    skills: {
+      frontend: 'Frontend',
+      backendData: 'Backend y Datos',
+      aiAutomation: 'AI y Automatización',
+      cloudDevOps: 'Cloud y DevOps'
     },
     contact: {
       emailLabel: 'Correo',
@@ -142,6 +155,13 @@ export const portfolioData = {
       period: '09/2022 - 01/2026',
       description:
         'Ingeniero de Desarrollo: gestioné y optimicé bases de datos, implementé infraestructura como código (IaC) en AWS y desarrollé aplicaciones web con React/Vite + TypeScript. También brindé soporte en despliegues y aseguramiento de calidad.'
+    },
+    {
+      title: 'Freelance',
+      company: 'InGrapes',
+      period: '11/2021 - 12/2021',
+      description:
+        'Desarrollé una landing page enfocada en presentación comercial y captación de clientes, incorporando componentes básicos en React para estructurar secciones reutilizables y mantener una base escalable.'
     }
   ] satisfies ExperienceItem[],
   caseStudies: [

@@ -10,6 +10,7 @@ const { title, company, period, description } = Astro.props;
 ---
 
 <div class="experience-card">
+	<span class="timeline-dot" aria-hidden="true"></span>
 	<h3>{title}</h3>
 	<h4>{company}</h4>
 	<p class="period">{period}</p>
@@ -18,30 +19,58 @@ const { title, company, period, description } = Astro.props;
 
 <style>
 	.experience-card {
+		position: relative;
 		background-color: rgb(var(--surface));
-		border-radius: 12px;
+		border-radius: 16px;
+		border: 1px solid rgba(var(--line), 0.14);
 		padding: 1.5rem;
 		margin-bottom: 1.5rem;
 		box-shadow: var(--shadow-elevation-1);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 	}
 	.experience-card:hover {
-		transform: translateY(-5px);
+		transform: translateY(-3px);
 		box-shadow: var(--shadow-elevation-2);
+		border-color: rgba(var(--accent), 0.36);
+	}
+
+	.timeline-dot {
+		position: absolute;
+		left: -2rem;
+		top: 1.35rem;
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		background-color: rgb(var(--accent));
+		box-shadow: 0 0 0 5px rgba(var(--accent), 0.16);
 	}
 	h3 {
 		margin: 0;
-		font-size: 1.5rem;
+		font-size: 1.28rem;
 		color: rgb(var(--accent));
 	}
 	h4 {
 		margin: 0.5rem 0;
-		font-size: 1.2rem;
+		font-size: 1rem;
 		font-weight: 400;
+		color: rgba(var(--text), 0.85);
 	}
 	.period {
-		font-size: 0.9rem;
-		color: rgba(var(--text), 0.7);
+		display: inline-block;
+		font-size: 0.78rem;
+		color: rgb(var(--accent));
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		background-color: rgba(var(--accent), 0.11);
+		border-radius: 999px;
+		padding: 0.33rem 0.62rem;
 		margin-bottom: 1rem;
+	}
+
+	@media (max-width: 720px) {
+		.timeline-dot {
+			left: -1.38rem;
+		}
 	}
 </style>

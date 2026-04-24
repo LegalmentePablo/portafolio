@@ -2,18 +2,85 @@
 interface Props {
   items: readonly string[];
   title: string;
+  categoryLabels: {
+    frontend: string;
+    backendData: string;
+    aiAutomation: string;
+    cloudDevOps: string;
+  };
 }
 
-const { items, title } = Astro.props;
+const { items, title, categoryLabels } = Astro.props;
+
+const categories = [
+  {
+    title: categoryLabels.frontend,
+    matches: ['React', 'TypeScript', 'JavaScript', 'Flutter']
+  },
+  {
+    title: categoryLabels.backendData,
+    matches: ['Python', 'Node.js', 'SQL / NoSQL']
+  },
+  {
+    title: categoryLabels.aiAutomation,
+    matches: ['LLMs', 'Agent orchestration', 'Prompt engineering']
+  },
+  {
+    title: categoryLabels.cloudDevOps,
+    matches: ['AWS', 'IaC', 'Docker', 'Git']
+  }
+];
+
+const skillLevels: Record<string, number> = {
+  React: 5,
+  TypeScript: 4,
+  JavaScript: 5,
+  Flutter: 3,
+  Python: 5,
+  'Node.js': 4,
+  'SQL / NoSQL': 4,
+  LLMs: 4,
+  'Agent orchestration': 4,
+  'Prompt engineering': 4,
+  AWS: 4,
+  IaC: 4,
+  Docker: 4,
+  Git: 5
+};
+
+const groupedSkills = categories
+  .map((category) => ({
+    ...category,
+    skills: category.matches.filter((skill) => items.includes(skill))
+  }))
+  .filter((category) => category.skills.length > 0);
 ---
 
 <section id="habilidades">
   <h2>{title}</h2>
-  <ul class="skills-list">
+  <div class="skills-grid">
     {
-      items.map((skill) => <li>{skill}</li>)
+      groupedSkills.map((group) => (
+        <article class="skills-group">
+          <h3>{group.title}</h3>
+          <ul class="skills-list">
+            {
+              group.skills.map((skill) => (
+                <li>
+                  <span class="skill-name">{skill}</span>
+                  <span
+                    class="skill-level"
+                    style={`--level: ${skillLevels[skill] ?? 3}`}
+                    aria-hidden="true"
+                  ></span>
+                </li>
+              ))
+            }
+          </ul>
+        </article>
+      ))
     }
-  </ul>
+  </div>
 </section>
 
 <style>
@@ -27,20 +94,67 @@ const { items, title } = Astro.props;
     text-align: center;
   }
 
-  .skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 1rem;
+  }
+
+  .skills-group {
+    background-color: rgb(var(--surface));
+    border-radius: 14px;
+    border: 1px solid rgba(var(--line), 0.14);
+    padding: 1rem;
+    box-shadow: var(--shadow-elevation-1);
+  }
+
+  .skills-group h3 {
+    margin: 0 0 0.85rem;
+    font-size: 1rem;
+    color: rgb(var(--accent));
+  }
+
+  .skills-list {
+    display: grid;
+    gap: 0.55rem;
     padding: 0;
-    list-style-type: none;
+    list-style: none;
+    margin: 0;
   }
 
   .skills-list li {
-    background-color: rgba(var(--accent), 0.1);
-    color: rgb(var(--accent));
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: rgba(var(--accent), 0.08);
+    color: rgba(var(--text), 0.92);
+    padding: 0.48rem 0.65rem;
+    border-radius: 10px;
+    font-size: 0.83rem;
+    font-weight: 600;
+  }
+
+  .skill-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .skill-level {
+    width: 64px;
+    height: 6px;
+    border-radius: 999px;
+    background-color: rgba(var(--line), 0.2);
+    position: relative;
+  }
+
+  .skill-level::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: calc(var(--level, 3) * 20%);
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)));
   }
 </style>

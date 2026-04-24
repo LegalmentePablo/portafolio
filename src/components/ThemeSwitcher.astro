@@ -9,15 +9,34 @@
 
 <style>
   #themeToggle {
-    border: 0;
-    background: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--line), 0.16);
+    background: rgba(var(--surface), 0.75);
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
   }
-  .sun { fill: black; }
+
+  #themeToggle:hover {
+    transform: translateY(-1px);
+    border-color: rgba(var(--accent), 0.45);
+    background: rgba(var(--accent), 0.08);
+  }
+
+  #themeToggle svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .sun { fill: rgb(var(--text)); }
   .moon { fill: transparent; }
 
   :global(.dark) .sun { fill: transparent; }
-  :global(.dark) .moon { fill: white; }
+  :global(.dark) .moon { fill: rgb(var(--text)); }
 </style>
 
 <script>

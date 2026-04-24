@@ -4,25 +4,31 @@ import type { CaseStudyItem } from '../../data/portfolio';
 interface Props {
   items: CaseStudyItem[];
   title: string;
+  caseTagLabel: string;
   roleLabel: string;
   stackLabel: string;
   pageLabel: string;
   demoLabel: string;
 }
 
-const { items, title, roleLabel, stackLabel, pageLabel, demoLabel } = Astro.props;
+const { items, title, caseTagLabel, roleLabel, stackLabel, pageLabel, demoLabel } = Astro.props;
 ---
 
 <section id="casos">
   <h2>{title}</h2>
   <div class="cases-grid">
     {
-      items.map((item) => (
+      items.map((item, index) => (
         <article class="case-card">
+          <span class="case-index">0{index + 1}</span>
+          <span class="case-tag">{caseTagLabel}</span>
           <h3>{item.title}</h3>
           <p>{item.problem}</p>
           <p><strong>{roleLabel}:</strong> {item.role}</p>
-          <p><strong>{stackLabel}:</strong> {item.stack.join(', ')}</p>
+          <p class="stack-title"><strong>{stackLabel}:</strong></p>
+          <ul class="stack-chips">
+            {item.stack.map((tech) => <li>{tech}</li>)}
+          </ul>
           <ul>
             {item.outcomes.map((outcome) => <li>{outcome}</li>)}
           </ul>
@@ -50,24 +56,96 @@ const { items, title, roleLabel, stackLabel, pageLabel, demoLabel } = Astro.prop
   .cases-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    gap: 1.15rem;
   }
 
   .case-card {
+    position: relative;
     background-color: rgb(var(--surface));
-    border-radius: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(var(--line), 0.14);
     padding: 1.25rem;
     box-shadow: var(--shadow-elevation-1);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+
+  .case-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-elevation-2);
+    border-color: rgba(var(--accent), 0.33);
+  }
+
+  .case-card::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    top: 0.72rem;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)));
+    opacity: 0.72;
+  }
+
+  .case-index {
+    display: inline-flex;
+    margin-top: 0.42rem;
+    margin-bottom: 0.7rem;
+    color: rgba(var(--text), 0.62);
+    font-size: 0.77rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-tag {
+    display: inline-block;
+    margin-bottom: 0.8rem;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: rgb(var(--accent));
+    background-color: rgba(var(--accent), 0.12);
+    border-radius: 999px;
+    padding: 0.32rem 0.62rem;
   }
 
   .case-card h3 {
-    margin-top: 0;
+    margin: 0;
     color: rgb(var(--accent));
+    font-size: 1.18rem;
   }
 
   .case-card p {
     margin: 0.65rem 0;
     line-height: 1.45;
+  }
+
+  .case-card strong {
+    color: rgb(var(--accent));
+  }
+
+  .stack-title {
+    margin-bottom: 0.45rem;
+  }
+
+  .stack-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0 0 0.7rem;
+    padding: 0;
+  }
+
+  .stack-chips li {
+    background-color: rgba(var(--accent), 0.12);
+    color: rgb(var(--accent));
+    border-radius: 999px;
+    padding: 0.28rem 0.56rem;
+    font-size: 0.75rem;
+    font-weight: 600;
   }
 
   .case-card ul {
@@ -82,12 +160,17 @@ const { items, title, roleLabel, stackLabel, pageLabel, demoLabel } = Astro.prop
   }
 
   .case-links a {
-    color: rgb(var(--accent));
+    color: rgb(var(--text));
     text-decoration: none;
     font-weight: 600;
+    border: 1px solid rgba(var(--line), 0.2);
+    border-radius: 999px;
+    padding: 0.46rem 0.84rem;
+    background-color: rgba(var(--surface), 0.7);
   }
 
   .case-links a:hover {
-    text-decoration: underline;
+    border-color: rgba(var(--accent), 0.5);
+    color: rgb(var(--accent));
   }
 </style>

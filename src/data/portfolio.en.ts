@@ -11,8 +11,13 @@ import type {
 export const portfolioDataEn = {
   meta: {
     title: 'Pablo Buitrago Mejia | Software Development Engineer',
+    description:
+      'Portfolio of Pablo Buitrago Mejia, systems engineer focused on product development, cloud, and data.',
+    siteUrl: 'https://portafolio-weld-omega.vercel.app',
+    ogImagePath: '/og-cover.png',
     heroTitle: 'Hi, I am',
     heroHighlight: 'Pablo Buitrago Mejia',
+    heroBadge: '',
     heroSubtitle: 'Systems Engineer focused on product development, cloud, and data',
     valueProposition:
       'I build robust end-to-end solutions with a focus on quality, ownership, and measurable business outcomes.',
@@ -70,13 +75,21 @@ export const portfolioDataEn = {
       skills: 'Technical Skills'
     },
     caseStudies: {
+      caseTagLabel: 'Real case',
       roleLabel: 'My role',
       stackLabel: 'Technologies',
       pageLabel: 'Page',
       demoLabel: 'Demo'
     },
     projects: {
+      projectTagLabel: 'Personal project',
       ctaLabel: 'View on GitHub'
+    },
+    skills: {
+      frontend: 'Frontend',
+      backendData: 'Backend and Data',
+      aiAutomation: 'AI and Automation',
+      cloudDevOps: 'Cloud and DevOps'
     },
     contact: {
       emailLabel: 'Email',
@@ -90,6 +103,13 @@ export const portfolioDataEn = {
       period: '09/2022 - 01/2026',
       description:
         'Development Engineer: managed and optimized databases, implemented Infrastructure as Code (IaC) in AWS, and built web applications using React/Vite + TypeScript. I also supported deployments and quality assurance.'
+    },
+    {
+      title: 'Freelance',
+      company: 'InGrapes',
+      period: '11/2021 - 12/2021',
+      description:
+        'Built a landing page focused on commercial presentation and lead capture, using basic React components to structure reusable sections and keep the foundation scalable.'
     }
   ] satisfies ExperienceItem[],
   caseStudies: [
