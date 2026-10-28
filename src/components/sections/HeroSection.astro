@@ -1,185 +1,257 @@
 ---
+import Icon from '../Icon.astro';
+import type { PortfolioData } from '../../data/portfolio';
+
 interface Props {
-  title: string;
-  highlight: string;
-  badgeLabel: string;
-  subtitle: string;
-  valueProposition: string;
-  location: string;
-  primaryCta: {
-    label: string;
-    href: string;
-    icon: string;
-  };
-  secondaryCta: {
-    label: string;
-    href: string;
-    icon: string;
-  };
+	hero: PortfolioData['hero'];
 }
 
-const { title, highlight, badgeLabel, subtitle, valueProposition, location, primaryCta, secondaryCta } = Astro.props;
+const { hero } = Astro.props;
 ---
 
-<section id="inicio" class="hero">
-  {badgeLabel && <span class="hero-badge">{badgeLabel}</span>}
-  <h1>
-    {title} <span class="highlight">{highlight}</span>
-  </h1>
-  <p class="subtitle">{subtitle}</p>
-  <p class="value">{valueProposition}</p>
-  <p class="location">
-    <span aria-hidden="true">●</span>
-    {location}
-  </p>
-  <div class="hero-cta">
-    <a href={primaryCta.href} target="_blank" rel="noopener noreferrer" class="cta primary">
-      <span class="cta-icon" style={`--icon-url: url('${primaryCta.icon}')`} aria-hidden="true"></span>
-      {primaryCta.label}
-    </a>
-    <a href={secondaryCta.href} target="_blank" rel="noopener noreferrer" class="cta secondary">
-      <span class="cta-icon" style={`--icon-url: url('${secondaryCta.icon}')`} aria-hidden="true"></span>
-      {secondaryCta.label}
-    </a>
-  </div>
+<section class="hero container" id="top" aria-labelledby="hero-title">
+	<div class="intro">
+		<h1 id="hero-title">{hero.name}</h1>
+		<p class="role">{hero.role}</p>
+		<p class="lead">{hero.lead}</p>
+
+		<div class="cta">
+			<a class="button button-primary" href={hero.primaryCta.href}>
+				<Icon name="mail" size={17} />
+				{hero.primaryCta.label}
+			</a>
+			{
+				hero.links.map((link) => (
+					<a class="button button-quiet" href={link.href} target="_blank" rel="noopener noreferrer">
+						{link.label}
+						<Icon name="arrow-up-right" size={15} />
+					</a>
+				))
+			}
+		</div>
+
+		<p class="meta">
+			<span>{hero.location}</span>
+			<span class="availability">
+				<span class="dot" aria-hidden="true"></span>
+				{hero.availability}
+			</span>
+		</p>
+	</div>
+
+	<aside class="now" aria-labelledby="now-title">
+		<h2 id="now-title" class="now-title">
+			{hero.now.title}
+			<span class="now-company">{hero.now.company}</span>
+		</h2>
+		<ul class="now-list">
+			{
+				hero.now.items.map((item) => (
+					<li>
+						<span class="now-figure tabular">{item.figure}</span>
+						<span class="now-label">{item.label}</span>
+					</li>
+				))
+			}
+		</ul>
+		<a class="now-link" href="#experiencia">
+			{hero.now.linkLabel}
+			<Icon name="arrow-right" size={15} />
+		</a>
+	</aside>
 </section>
 
 <style>
-  .hero {
-    text-align: center;
-    padding: 2.3rem 0 3.8rem;
-    position: relative;
-    isolation: isolate;
-  }
+	.hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+		gap: clamp(2.5rem, 6vw, 5.5rem);
+		align-items: end;
+		padding-top: clamp(3.5rem, 9vw, 7.5rem);
+		padding-bottom: clamp(3.5rem, 8vw, 6rem);
+	}
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    width: min(740px, 92vw);
-    height: 320px;
-    left: 50%;
-    top: 0.3rem;
-    transform: translateX(-50%);
-    border-radius: 999px;
-    background: linear-gradient(
-      120deg,
-      rgba(var(--accent), 0.18),
-      rgba(var(--accent-2), 0.12)
-    );
-    filter: blur(42px);
-    z-index: -1;
-  }
+	.role {
+		max-width: 34rem;
+		margin-top: 0.75rem;
+		color: var(--ink-3);
+		font-size: clamp(1.4rem, 2.8vw, 2rem);
+		font-weight: 600;
+		line-height: 1.2;
+		letter-spacing: -0.025em;
+		text-wrap: balance;
+	}
 
-  @media (max-width: 900px) {
-    .hero {
-      padding: 1.75rem 0 2.85rem;
-    }
-  }
+	h1 {
+		font-size: clamp(2.6rem, 6.6vw, 4.75rem);
+		font-weight: 800;
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+	}
 
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid rgba(var(--accent), 0.33);
-    background-color: rgba(var(--accent), 0.11);
-    color: rgb(var(--accent));
-    border-radius: 999px;
-    padding: 0.42rem 0.88rem;
-    font-size: 0.79rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 0.95rem;
-  }
+	.lead {
+		max-width: 36rem;
+		margin-top: 1.5rem;
+		color: var(--ink-2);
+		font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+		line-height: 1.55;
+	}
 
-  h1 {
-    font-size: clamp(2.2rem, 6vw, 3.55rem);
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    line-height: 1.06;
-  }
+	.cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-top: 2rem;
+	}
 
-  .highlight {
-    color: rgb(var(--accent));
-  }
+	.button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-height: 2.75rem;
+		padding: 0 1.1rem;
+		border: 1px solid var(--line-strong);
+		border-radius: 8px;
+		font-size: 0.975rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease,
+			color 0.15s ease;
+	}
 
-  .subtitle {
-    margin: 0 auto;
-    max-width: 760px;
-    font-size: clamp(1rem, 2.25vw, 1.22rem);
-  }
+	.button-primary {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: var(--bg);
+	}
 
-  .value {
-    max-width: 760px;
-    margin: 0.95rem auto 0;
-    line-height: 1.5;
-    color: rgb(var(--muted));
-  }
+	.button-primary:hover {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--on-accent);
+	}
 
-  .location {
-    margin-top: 0.72rem;
-    color: rgba(var(--text), 0.78);
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    border: 1px solid rgba(var(--line), 0.16);
-    padding: 0.32rem 0.75rem;
-    border-radius: 999px;
-    background-color: rgba(var(--surface), 0.8);
-  }
+	.button-quiet {
+		color: var(--ink);
+	}
 
-  .hero-cta {
-    margin-top: 1.35rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-  }
+	.button-quiet:hover {
+		border-color: var(--ink);
+	}
 
-  .cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    border-radius: 999px;
-    padding: 0.74rem 1.18rem;
-    border: 1px solid transparent;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
+	.button-quiet :global(svg) {
+		color: var(--ink-3);
+	}
 
-  .cta:hover {
-    transform: translateY(-2px);
-  }
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 1.5rem;
+		margin-top: 1.75rem;
+		color: var(--ink-3);
+		font-size: 0.925rem;
+	}
 
-  .cta-icon {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    background-color: currentColor;
-    -webkit-mask-image: var(--icon-url);
-    mask-image: var(--icon-url);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-  }
+	.availability {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
 
-  .cta.primary {
-    background: linear-gradient(120deg, rgb(var(--accent)), rgb(var(--accent-2)));
-    color: #ffffff;
-    box-shadow: 0 10px 22px rgba(var(--accent), 0.33);
-  }
+	.dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--accent);
+	}
 
-  .cta.secondary {
-    background-color: rgba(var(--surface), 0.9);
-    color: rgb(var(--text));
-    border-color: rgba(var(--line), 0.2);
-  }
+	.now {
+		padding-top: 1.25rem;
+		border-top: 2px solid var(--ink);
+	}
 
-  .cta.secondary:hover {
-    border-color: rgba(var(--accent), 0.46);
-  }
+	.now-title {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		font-size: 0.975rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+	}
+
+	.now-company {
+		color: var(--accent);
+		font-weight: 600;
+	}
+
+	.now-list {
+		margin-top: 0.75rem;
+	}
+
+	.now-list li {
+		display: grid;
+		grid-template-columns: 3rem minmax(0, 1fr);
+		gap: 1rem;
+		align-items: baseline;
+		padding: 0.85rem 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.now-figure {
+		font-size: 1.75rem;
+		font-weight: 700;
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.now-label {
+		color: var(--ink-2);
+		font-size: 0.95rem;
+		line-height: 1.45;
+	}
+
+	.now-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: 1rem;
+		font-size: 0.925rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: var(--ink);
+	}
+
+	.now-link :global(svg) {
+		transition: transform 0.25s var(--ease-out);
+	}
+
+	.now-link:hover :global(svg) {
+		transform: translateX(3px);
+	}
+
+	@media (max-width: 900px) {
+		.hero {
+			grid-template-columns: 1fr;
+			align-items: start;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.cta {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 0.5rem;
+		}
+
+		.button {
+			justify-content: center;
+		}
+
+		.button-primary {
+			grid-column: 1 / -1;
+		}
+	}
 </style>

@@ -1,176 +1,274 @@
 ---
-import type { CaseStudyItem } from '../../data/portfolio';
+import Section from '../Section.astro';
+import Icon from '../Icon.astro';
+import type { CaseGroup, PortfolioData } from '../../data/portfolio';
 
 interface Props {
-  items: CaseStudyItem[];
-  title: string;
-  caseTagLabel: string;
-  roleLabel: string;
-  stackLabel: string;
-  pageLabel: string;
-  demoLabel: string;
+	title: string;
+	groups: CaseGroup[];
+	ui: PortfolioData['ui'];
 }
 
-const { items, title, caseTagLabel, roleLabel, stackLabel, pageLabel, demoLabel } = Astro.props;
+const { title, groups, ui } = Astro.props;
 ---
 
-<section id="casos">
-  <h2>{title}</h2>
-  <div class="cases-grid">
-    {
-      items.map((item, index) => (
-        <article class="case-card">
-          <span class="case-index">0{index + 1}</span>
-          <span class="case-tag">{caseTagLabel}</span>
-          <h3>{item.title}</h3>
-          <p>{item.problem}</p>
-          <p><strong>{roleLabel}:</strong> {item.role}</p>
-          <p class="stack-title"><strong>{stackLabel}:</strong></p>
-          <ul class="stack-chips">
-            {item.stack.map((tech) => <li>{tech}</li>)}
-          </ul>
-          <ul>
-            {item.outcomes.map((outcome) => <li>{outcome}</li>)}
-          </ul>
-          <div class="case-links">
-            {item.repoUrl && <a href={item.repoUrl} target="_blank" rel="noopener noreferrer">{pageLabel}</a>}
-            {item.demoUrl && <a href={item.demoUrl} target="_blank" rel="noopener noreferrer">{demoLabel}</a>}
-          </div>
-        </article>
-      ))
-    }
-  </div>
-</section>
+<Section id="casos" title={title}>
+	{
+		groups.map((group, groupIndex) => (
+			<div class="group">
+				<div class="group-head">
+					<h3>{group.title}</h3>
+					<p>{group.description}</p>
+				</div>
+				<ul class="cases">
+					{group.items.map((item, index) => (
+						<li>
+							<details class="case" open={groupIndex === 0 && index === 0}>
+								<summary>
+									<span class="case-heading">
+										<span class="case-title">{item.title}</span>
+										<span class="case-context">{item.context}</span>
+									</span>
+									<span class="toggle" aria-hidden="true">
+										<Icon name="chevron-down" size={18} />
+									</span>
+								</summary>
+								<div class="case-body">
+									<p class="problem">{item.problem}</p>
+									<dl class="facts">
+										<div>
+											<dt>{ui.roleLabel}</dt>
+											<dd>{item.role}</dd>
+										</div>
+										<div>
+											<dt>{ui.outcomesLabel}</dt>
+											<dd>
+												<ul class="outcomes">
+													{item.outcomes.map((outcome) => (
+														<li>{outcome}</li>
+													))}
+												</ul>
+											</dd>
+										</div>
+										<div>
+											<dt>{ui.stackLabel}</dt>
+											<dd>
+												<ul class="stack-line">
+													{item.stack.map((tech) => (
+														<li>{tech}</li>
+													))}
+												</ul>
+											</dd>
+										</div>
+									</dl>
+									{(item.status || item.url) && (
+										<p class="case-foot">
+											{item.status && <span class="status">{item.status}</span>}
+											{item.url && (
+												<a href={item.url} target="_blank" rel="noopener noreferrer">
+													{ui.visitLabel}
+													<Icon name="arrow-up-right" size={14} />
+												</a>
+											)}
+										</p>
+									)}
+								</div>
+							</details>
+						</li>
+					))}
+				</ul>
+			</div>
+		))
+	}
+</Section>
 
 <style>
-  section {
-    margin-bottom: 4rem;
-  }
+	.group + .group {
+		margin-top: 3rem;
+	}
 
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
+	.group-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.25rem 1.5rem;
+		margin-bottom: 0.5rem;
+	}
 
-  .cases-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.15rem;
-  }
+	.group-head h3 {
+		font-size: 1.05rem;
+		letter-spacing: -0.01em;
+	}
 
-  .case-card {
-    position: relative;
-    background-color: rgb(var(--surface));
-    border-radius: 16px;
-    border: 1px solid rgba(var(--line), 0.14);
-    padding: 1.25rem;
-    box-shadow: var(--shadow-elevation-1);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
-  }
+	.group-head p {
+		color: var(--ink-3);
+		font-size: 0.875rem;
+	}
 
-  .case-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-elevation-2);
-    border-color: rgba(var(--accent), 0.33);
-  }
+	.cases li + li .case {
+		border-top: 0;
+	}
 
-  .case-card::before {
-    content: '';
-    position: absolute;
-    left: 1.25rem;
-    right: 1.25rem;
-    top: 0.72rem;
-    height: 3px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)));
-    opacity: 0.72;
-  }
+	.case {
+		border-top: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+	}
 
-  .case-index {
-    display: inline-flex;
-    margin-top: 0.42rem;
-    margin-bottom: 0.7rem;
-    color: rgba(var(--text), 0.62);
-    font-size: 0.77rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
+	summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding: 1.2rem 0;
+		cursor: pointer;
+		list-style: none;
+	}
 
-  .case-tag {
-    display: inline-block;
-    margin-bottom: 0.8rem;
-    font-size: 0.74rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 700;
-    color: rgb(var(--accent));
-    background-color: rgba(var(--accent), 0.12);
-    border-radius: 999px;
-    padding: 0.32rem 0.62rem;
-  }
+	summary::-webkit-details-marker {
+		display: none;
+	}
 
-  .case-card h3 {
-    margin: 0;
-    color: rgb(var(--accent));
-    font-size: 1.18rem;
-  }
+	.case-heading {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
 
-  .case-card p {
-    margin: 0.65rem 0;
-    line-height: 1.45;
-  }
+	.case-title {
+		font-size: 1.15rem;
+		font-weight: 650;
+		letter-spacing: -0.015em;
+		line-height: 1.3;
+		transition: color 0.15s ease;
+	}
 
-  .case-card strong {
-    color: rgb(var(--accent));
-  }
+	.case-context {
+		color: var(--ink-3);
+		font-size: 0.925rem;
+		line-height: 1.45;
+	}
 
-  .stack-title {
-    margin-bottom: 0.45rem;
-  }
+	summary:hover .case-title {
+		color: var(--accent);
+	}
 
-  .stack-chips {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin: 0 0 0.7rem;
-    padding: 0;
-  }
+	.toggle {
+		display: inline-grid;
+		flex: none;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		border: 1px solid var(--line);
+		border-radius: 50%;
+		color: var(--ink-2);
+		transition:
+			transform 0.3s var(--ease-out),
+			border-color 0.15s ease;
+	}
 
-  .stack-chips li {
-    background-color: rgba(var(--accent), 0.12);
-    color: rgb(var(--accent));
-    border-radius: 999px;
-    padding: 0.28rem 0.56rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
+	summary:hover .toggle {
+		border-color: var(--ink-3);
+	}
 
-  .case-card ul {
-    margin: 0.8rem 0 0;
-    padding-left: 1rem;
-  }
+	.case[open] .toggle {
+		transform: rotate(180deg);
+	}
 
-  .case-links {
-    margin-top: 1rem;
-    display: flex;
-    gap: 0.75rem;
-  }
+	.case-body {
+		max-width: 46rem;
+		padding-bottom: 1.75rem;
+	}
 
-  .case-links a {
-    color: rgb(var(--text));
-    text-decoration: none;
-    font-weight: 600;
-    border: 1px solid rgba(var(--line), 0.2);
-    border-radius: 999px;
-    padding: 0.46rem 0.84rem;
-    background-color: rgba(var(--surface), 0.7);
-  }
+	.case[open] .case-body {
+		animation: case-in 0.4s var(--ease-out);
+	}
 
-  .case-links a:hover {
-    border-color: rgba(var(--accent), 0.5);
-    color: rgb(var(--accent));
-  }
+	@keyframes case-in {
+		from {
+			opacity: 0;
+			transform: translateY(-4px);
+		}
+	}
+
+	.problem {
+		color: var(--ink-2);
+	}
+
+	.facts {
+		display: grid;
+		gap: 1rem;
+		margin: 1.25rem 0 0;
+	}
+
+	.facts > div {
+		display: grid;
+		grid-template-columns: 7.5rem minmax(0, 1fr);
+		gap: 1rem;
+	}
+
+	dt {
+		color: var(--ink-3);
+		font-size: 0.85rem;
+		font-weight: 600;
+		padding-top: 0.15rem;
+	}
+
+	dd {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.55;
+	}
+
+	.outcomes li {
+		position: relative;
+		padding-left: 1.1rem;
+	}
+
+	.outcomes li + li {
+		margin-top: 0.45rem;
+	}
+
+	.outcomes li::before {
+		content: '';
+		position: absolute;
+		left: 0.1rem;
+		top: 0.72em;
+		width: 0.4rem;
+		height: 1px;
+		background: var(--ink-3);
+	}
+
+	.case-foot {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1.5rem;
+		margin-top: 1.25rem;
+		font-size: 0.9rem;
+	}
+
+	.status {
+		color: var(--ink-3);
+	}
+
+	.case-foot a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-weight: 600;
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.case-foot a:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 560px) {
+		.facts > div {
+			grid-template-columns: 1fr;
+			gap: 0.25rem;
+		}
+	}
 </style>

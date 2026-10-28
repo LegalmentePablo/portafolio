@@ -1,102 +1,80 @@
 # Portafolio con Astro
 
-Portafolio personal construido con Astro para mostrar experiencia profesional, proyectos, educacion, habilidades y contacto. En dos idiomas (ES/EN).
+Portafolio personal de Pablo Buitrago Mejia: experiencia, casos, proyectos, habilidades y contacto, en español e inglés.
 
 ## Demo
 
-- Produccion: https://portafolio-tau-ruddy-65.vercel.app/
+- Producción: https://portafolio-tau-ruddy-65.vercel.app/
 
 ## Stack
 
 - Astro 6
 - TypeScript
-- CSS (global + estilos por componente)
+- CSS por componente (estilos globales y tokens en el layout)
 - Bun (runtime y gestor de paquetes)
 - Vercel (deploy)
 
-## Que incluye
+## Qué incluye
 
-- Version en espanol y version en ingles
-- Navegacion por secciones con menu responsive
-- Switch de tema claro/oscuro con persistencia en localStorage
-- Metadatos SEO y Open Graph
-- Animaciones de entrada respetando `prefers-reduced-motion`
-- Contenido centralizado en archivos de datos para facilitar mantenimiento
+- Versión en español (`/`) y en inglés (`/en/`), con `hreflang` entre ambas
+- Navegación por secciones con indicador de sección activa y menú móvil
+- Tema claro/oscuro: respeta la preferencia del sistema y recuerda la elección
+- Casos desplegables (`<details>`) para leer el detalle sin perder el resumen
+- Botón para copiar el correo
+- SEO, Open Graph y sitemap
+- Animación de entrada discreta que se desactiva con `prefers-reduced-motion`
 
-## Decisiones tecnicas (y por que)
-
-### Sobre el CSS en componentes
-
-Si, en varios casos el CSS esta dentro de cada `.astro` en lugar de estar todo separado en archivos externos.
-
-Lo hice asi por estas razones:
-
-- Coherencia de componente: estructura, logica y estilos viven juntos y son mas faciles de ajustar rapido.
-- Menos contexto mental: cuando retoco una seccion no tengo que saltar entre varios archivos para cambios pequenos.
-- Scope natural de Astro: evita fugas de estilos y reduce conflictos.
-
-Tambien hay una excepcion intencional: el header usa un CSS separado porque concentra reglas compartidas de navegacion (desktop + mobile) y me resulto mas claro mantenerlo en un solo archivo.
+## Decisiones técnicas
 
 ### Contenido separado de la UI
 
-La informacion principal del portafolio vive en archivos de datos (ES/EN). Eso permite:
+Todo el texto vive en `src/data/portfolio.ts` (ES) y `src/data/portfolio.en.ts` (EN). Ambos cumplen la misma interfaz `PortfolioData`, así que TypeScript avisa si a un idioma le falta algo. Las dos páginas renderizan el mismo componente `Home.astro` con distintos datos.
 
-- Cambiar textos sin tocar la estructura visual.
-- Mantener consistencia entre idiomas.
-- Escalar el contenido sin duplicar componentes.
+### Estilos
+
+Los tokens de color, tipografía y espaciado están en `src/layouts/Layout.astro` (variables CSS, con su versión oscura en `:root.dark`). Cada componente trae sus propios estilos con el scope de Astro.
 
 ## Estructura del proyecto
 
 ```txt
 src/
-	components/
-		sections/       # Secciones principales (hero, experiencia, proyectos, etc.)
-	data/             # Contenido del portafolio por idioma
-	layouts/          # Layout base, metadatos y estilos globales
-	pages/            # Rutas ES y EN
+  components/
+    sections/       # Hero, experiencia, casos, proyectos, habilidades, formación, contacto
+    Header.astro    # Navegación, idioma y tema
+    Home.astro      # Página completa a partir de PortfolioData
+    Section.astro   # Contenedor común de las secciones
+    Icon.astro      # Iconos SVG
+  data/             # Contenido por idioma
+  layouts/          # Layout base, metadatos y tokens
+  pages/            # Rutas ES y EN
 ```
 
-## Requisitos
-
-- Bun instalado
-- Node no es necesario para ejecutar scripts del proyecto
-
 ## Primer arranque
-
-Desde la raiz del proyecto:
 
 ```sh
 bun install
 bun run dev
 ```
 
-Sitio local:
+Sitio local: http://localhost:4321
 
-- http://localhost:4321
-
-## Scripts disponibles
+## Scripts
 
 ```sh
 bun run dev      # Desarrollo
-bun run build    # Build de produccion
+bun run build    # Build de producción
 bun run preview  # Preview local del build
-bun run astro -- --help
 ```
 
 ## Deploy
 
-El proyecto esta preparado para desplegar en Vercel. Cada push a la rama principal puede disparar un nuevo deploy segun la configuracion del repo.
+Cada push a la rama principal dispara un nuevo deploy en Vercel.
 
 ## Problemas comunes
 
-Si estas en Windows y `bun install` falla de forma rara (archivos faltantes dentro de dependencias):
+Si en Windows `bun install` falla de forma rara (archivos faltantes dentro de dependencias):
 
 ```sh
 bun pm cache rm
-```
-
-Luego elimina `node_modules` y reinstala:
-
-```sh
 bun install --backend=copyfile
 ```

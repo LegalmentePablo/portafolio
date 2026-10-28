@@ -1,149 +1,237 @@
 ---
-import type { ContactLink } from '../../data/portfolio';
+import Icon from '../Icon.astro';
+import type { PortfolioData } from '../../data/portfolio';
 
 interface Props {
-  title: string;
-  message: string;
-  email: string;
-  phone: string;
-  links: ContactLink[];
-  emailLabel: string;
-  phoneLabel: string;
+	title: string;
+	contact: PortfolioData['contact'];
+	ui: PortfolioData['ui'];
+	footer: string;
 }
 
-const { title, message, email, phone, links, emailLabel, phoneLabel } = Astro.props;
+const { title, contact, ui, footer } = Astro.props;
+const phoneHref = `tel:${contact.phone.replace(/\s+/g, '')}`;
+const year = new Date().getFullYear();
 ---
 
-<section id="contacto" class="contact-section">
-  <h2>{title}</h2>
-  <p class="contact-text">{message}</p>
-  <div class="contact-card">
-    <div class="contact-meta-grid">
-      <p class="contact-meta">
-        <span class="meta-label">{emailLabel}</span>
-        <a href={`mailto:${email}`}>{email}</a>
-      </p>
-      <p class="contact-meta">
-        <span class="meta-label">{phoneLabel}</span>
-        <a href={`tel:${phone.replace(/\s+/g, '')}`}>{phone}</a>
-      </p>
-    </div>
+<section class="contact" id="contacto" aria-labelledby="contacto-title" data-reveal>
+	<div class="container">
+		<h2 id="contacto-title" class="visually-hidden">{title}</h2>
+		<p class="heading">{contact.heading}</p>
+		<p class="message">{contact.message}</p>
 
-    <div class="contact-actions">
-      {
-        links.map((link) => (
-          <a href={link.href} target="_blank" rel="noopener noreferrer" class="contact-button">
-            <img src={link.icon} alt={link.label} class="contact-icon" />
-            {link.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
+		<div class="channels">
+			<div class="email-row">
+				<a class="email" href={`mailto:${contact.email}`}>
+					<span class="visually-hidden">{contact.emailLabel}: </span>
+					{contact.email}
+				</a>
+				<button
+					type="button"
+					class="copy"
+					data-copy={contact.email}
+					data-label={ui.copyEmail}
+					data-done={ui.copied}
+				>
+					<Icon name="copy" size={16} class="icon-copy" />
+					<Icon name="check" size={16} class="icon-check" />
+					<span class="copy-text" aria-live="polite">{ui.copyEmail}</span>
+				</button>
+			</div>
+
+			<ul class="links">
+				<li>
+					<a href={phoneHref}>
+						<Icon name="phone" size={16} />
+						<span class="visually-hidden">{contact.phoneLabel}: </span>
+						<span class="tabular">{contact.phone}</span>
+					</a>
+				</li>
+				{
+					contact.links.map((link) => (
+						<li>
+							<a href={link.href} target="_blank" rel="noopener noreferrer">
+								{link.label}
+								<Icon name="arrow-up-right" size={14} />
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<footer class="footer">
+			<p>© {year} · {footer}</p>
+			<a href="#top">
+				{ui.backToTop}
+				<Icon name="arrow-up" size={14} />
+			</a>
+		</footer>
+	</div>
 </section>
 
 <style>
-  .contact-section {
-    text-align: center;
-    margin-bottom: 4rem;
-  }
+	.contact {
+		margin-top: clamp(4rem, 9vw, 7rem);
+		padding-top: clamp(3.5rem, 8vw, 6rem);
+		background: var(--bg-sunk);
+		border-top: 1px solid var(--line);
+	}
 
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
+	.heading {
+		font-size: clamp(2.4rem, 6vw, 4.5rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: -0.035em;
+		text-wrap: balance;
+	}
 
-  .contact-text {
-    margin-bottom: 1.2rem;
-  }
+	.message {
+		max-width: 38rem;
+		margin-top: 1.25rem;
+		color: var(--ink-2);
+		font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+		line-height: 1.55;
+	}
 
-  .contact-card {
-    max-width: 760px;
-    margin: 0 auto;
-    background:
-      linear-gradient(155deg, rgba(var(--surface), 0.98), rgba(var(--surface), 0.92));
-    border-radius: 18px;
-    border: 1px solid rgba(var(--line), 0.14);
-    padding: 1.35rem;
-    box-shadow: var(--shadow-elevation-1);
-  }
+	.channels {
+		margin-top: 2.5rem;
+	}
 
-  .contact-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-  }
+	.email-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1.25rem;
+	}
 
-  .contact-meta {
-    margin: 0;
-    padding: 0.75rem 0.9rem;
-    border-radius: 10px;
-    background-color: rgba(var(--accent), 0.1);
-    border: 1px solid rgba(var(--accent), 0.22);
-    color: rgba(var(--text), 0.86);
-    text-align: left;
-  }
+	.email {
+		font-size: clamp(1.35rem, 3.4vw, 2.1rem);
+		font-weight: 650;
+		letter-spacing: -0.02em;
+		text-decoration: underline;
+		text-decoration-color: var(--line-strong);
+		text-decoration-thickness: 2px;
+		text-underline-offset: 0.18em;
+		overflow-wrap: anywhere;
+		transition:
+			color 0.15s ease,
+			text-decoration-color 0.15s ease;
+	}
 
-  .meta-label {
-    display: block;
-    font-size: 0.78rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    opacity: 0.72;
-    margin-bottom: 0.2rem;
-  }
+	.email:hover {
+		color: var(--accent);
+		text-decoration-color: currentColor;
+	}
 
-  .contact-meta a {
-    color: rgb(var(--accent));
-    text-decoration: none;
-    font-weight: 600;
-  }
+	.copy {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		min-height: 2.25rem;
+		padding: 0 0.8rem;
+		border: 1px solid var(--line-strong);
+		border-radius: 8px;
+		background: transparent;
+		color: var(--ink-2);
+		font: inherit;
+		font-size: 0.875rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
+	}
 
-  .contact-meta a:hover {
-    text-decoration: underline;
-  }
+	.copy:hover {
+		color: var(--ink);
+		border-color: var(--ink);
+	}
 
-  .contact-actions {
-    display: flex;
-    justify-content: center;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
+	.copy :global(.icon-check),
+	.copy.is-copied :global(.icon-copy) {
+		display: none;
+	}
 
-  .contact-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(120deg, rgb(var(--accent)), rgb(var(--accent-2)));
-    color: #ffffff;
-    padding: 0.8rem 1.5rem;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin: 0 0.4rem;
-  }
+	.copy.is-copied :global(.icon-check) {
+		display: block;
+	}
 
-  .contact-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(var(--accent), 0.35);
-  }
+	.copy.is-copied {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
 
-  .contact-icon {
-    width: 18px;
-    height: 18px;
-    filter: brightness(0) invert(1);
-  }
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 2rem;
+		margin-top: 1.5rem;
+	}
 
-  :global(.dark) .contact-icon {
-    filter: brightness(0) invert(1);
-  }
+	.links a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		color: var(--ink-2);
+		font-weight: 600;
+		text-decoration: none;
+	}
 
-  @media (max-width: 720px) {
-    .contact-meta-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+	.links a:hover {
+		color: var(--ink);
+	}
+
+	@media (max-width: 560px) {
+		.links li:first-child {
+			flex-basis: 100%;
+		}
+	}
+
+	.footer {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.75rem 2rem;
+		margin-top: clamp(3.5rem, 8vw, 6rem);
+		padding: 1.5rem 0 2rem;
+		border-top: 1px solid var(--line);
+		color: var(--ink-3);
+		font-size: 0.875rem;
+	}
+
+	.footer a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		text-decoration: none;
+	}
+
+	.footer a:hover {
+		color: var(--ink);
+	}
 </style>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+		const text = button.querySelector<HTMLElement>('.copy-text');
+		let timer: number | undefined;
+
+		button.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(button.dataset.copy ?? '');
+			} catch {
+				const email = document.querySelector('.email');
+				if (email) window.getSelection()?.selectAllChildren(email);
+				return;
+			}
+			button.classList.add('is-copied');
+			if (text) text.textContent = button.dataset.done ?? '';
+			window.clearTimeout(timer);
+			timer = window.setTimeout(() => {
+				button.classList.remove('is-copied');
+				if (text) text.textContent = button.dataset.label ?? '';
+			}, 2000);
+		});
+	});
+</script>

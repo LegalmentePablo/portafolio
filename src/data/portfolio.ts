@@ -1,35 +1,57 @@
+export type Lang = 'es' | 'en';
+
 export interface NavLink {
   href: string;
   label: string;
 }
 
-export interface SocialLink {
+export interface ExternalLink {
   href: string;
   label: string;
-  icon: string;
 }
 
 export interface ExperienceItem {
-  title: string;
   company: string;
+  title: string;
   period: string;
+  current?: boolean;
+  summary: string;
+  highlights: string[];
+  stack: string[];
+}
+
+export interface CaseStudyItem {
+  title: string;
+  context: string;
+  problem: string;
+  role: string;
+  outcomes: string[];
+  stack: string[];
+  status?: string;
+  url?: string;
+}
+
+export interface CaseGroup {
+  title: string;
   description: string;
+  items: CaseStudyItem[];
 }
 
 export interface ProjectItem {
   title: string;
   description: string;
+  stack: string[];
   href: string;
 }
 
-export interface CaseStudyItem {
+export interface SkillGroup {
   title: string;
-  problem: string;
-  role: string;
-  stack: string[];
-  outcomes: string[];
-  repoUrl?: string;
-  demoUrl?: string;
+  items: string[];
+}
+
+export interface NowItem {
+  figure: string;
+  label: string;
 }
 
 export interface EducationItem {
@@ -38,244 +60,364 @@ export interface EducationItem {
   period: string;
 }
 
-export interface ProcessStep {
-  title: string;
-  description: string;
-}
-
-export interface StandardItem {
-  title: string;
-  description: string;
-}
-
-export interface InsightItem {
-  title: string;
-  summary: string;
-  href: string;
-}
-
-export interface ContactLink {
-  href: string;
-  label: string;
-  icon: string;
-}
-
-export const portfolioData = {
+export interface PortfolioData {
+  lang: Lang;
   meta: {
-    title: 'Pablo Buitrago Mejia | Software Development Engineer',
+    title: string;
+    description: string;
+    siteUrl: string;
+    ogImagePath: string;
+  };
+  ui: {
+    skipLink: string;
+    mainNavLabel: string;
+    langSwitchLabel: string;
+    openMenu: string;
+    closeMenu: string;
+    themeToggle: string;
+    viewDetails: string;
+    roleLabel: string;
+    outcomesLabel: string;
+    stackLabel: string;
+    visitLabel: string;
+    sourceLabel: string;
+    currentLabel: string;
+    copyEmail: string;
+    copied: string;
+    backToTop: string;
+  };
+  navigation: NavLink[];
+  hero: {
+    name: string;
+    role: string;
+    lead: string;
+    location: string;
+    availability: string;
+    primaryCta: ExternalLink;
+    links: ExternalLink[];
+    now: {
+      title: string;
+      company: string;
+      items: NowItem[];
+      linkLabel: string;
+    };
+  };
+  sections: {
+    experience: string;
+    cases: string;
+    projects: string;
+    projectsIntro: string;
+    skills: string;
+    education: string;
+    contact: string;
+  };
+  experience: ExperienceItem[];
+  caseGroups: CaseGroup[];
+  projects: ProjectItem[];
+  skills: SkillGroup[];
+  education: EducationItem[];
+  contact: {
+    heading: string;
+    message: string;
+    email: string;
+    phone: string;
+    emailLabel: string;
+    phoneLabel: string;
+    links: ExternalLink[];
+  };
+  footer: string;
+}
+
+const linkedin = 'https://www.linkedin.com/in/pbuitragom/';
+const github = 'https://github.com/LegalmentePablo';
+
+export const portfolioData: PortfolioData = {
+  lang: 'es',
+  meta: {
+    title: 'Pablo Buitrago Mejia · Ingeniero de software (AWS, backend e IA)',
     description:
-      'Portafolio de Pablo Buitrago Mejia, ingeniero de sistemas con enfoque en desarrollo de producto, cloud y datos.',
-    siteUrl: 'https://portafolio-weld-omega.vercel.app',
-    ogImagePath: '/og-cover.png',
-    heroTitle: 'Hola, soy',
-    heroHighlight: 'Pablo Buitrago Mejia',
-    heroBadge: '',
-    heroSubtitle: 'Ingeniero de Sistemas enfocado en desarrollo de producto, cloud y datos',
-    valueProposition:
-      'Construyo soluciones robustas de principio a fin, con enfoque en calidad, responsabilidad y resultados medibles para el negocio.',
-    location: 'Medellín, Antioquia',
-    primaryCta: {
-      label: 'Escríbeme por LinkedIn',
-      href: 'https://www.linkedin.com/in/pbuitragom/',
-      icon: '/linkedin-icon.svg'
-    },
-    secondaryCta: {
-      label: 'Ver mi GitHub',
-      href: 'https://github.com/LegalmentePablo',
-      icon: '/github-icon.svg'
-    }
+      'Ingeniero de software en Medellín. Construyo backends serverless en AWS, sistemas de facturación y agentes de voz con IA, desde el diseño hasta producción.',
+    siteUrl: 'https://portafolio-tau-ruddy-65.vercel.app',
+    ogImagePath: '/og-cover.png'
   },
-  about: {
-    title: 'Sobre Mí',
-    summary:
-      'Soy una persona seria, responsable y comprometida con hacer bien las cosas. Me caracterizo por trabajar con orden, cumplir lo que prometo y mantener una comunicación clara.',
-    education:
-      'Como Ingeniero de Sistemas, combino disciplina y criterio técnico para entregar soluciones útiles, estables y pensadas para el largo plazo.',
-    socialLinks: [
-      {
-        href: 'https://www.linkedin.com/in/pbuitragom/',
-        label: 'LinkedIn',
-        icon: '/linkedin-icon.svg'
-      },
-      {
-        href: 'https://github.com/LegalmentePablo',
-        label: 'GitHub',
-        icon: '/github-icon.svg'
-      }
-    ] satisfies SocialLink[]
+  ui: {
+    skipLink: 'Saltar al contenido',
+    mainNavLabel: 'Navegación principal',
+    langSwitchLabel: 'Idioma',
+    openMenu: 'Abrir menú',
+    closeMenu: 'Cerrar menú',
+    themeToggle: 'Cambiar tema claro u oscuro',
+    viewDetails: 'Ver detalle',
+    roleLabel: 'Mi aporte',
+    outcomesLabel: 'Resultado',
+    stackLabel: 'Tecnologías',
+    visitLabel: 'Visitar sitio',
+    sourceLabel: 'Código',
+    currentLabel: 'Actual',
+    copyEmail: 'Copiar correo',
+    copied: 'Copiado',
+    backToTop: 'Volver arriba'
   },
   navigation: [
-    { href: '#inicio', label: 'Inicio' },
     { href: '#experiencia', label: 'Experiencia' },
-    { href: '#casos', label: 'Proyectos Profesionales' },
-    { href: '#educacion', label: 'Educación' },
-    { href: '#proyectos', label: 'Proyectos Personales' },
+    { href: '#casos', label: 'Casos' },
+    { href: '#proyectos', label: 'Proyectos' },
     { href: '#habilidades', label: 'Habilidades' },
     { href: '#contacto', label: 'Contacto' }
-  ] satisfies NavLink[],
-  ui: {
-    header: {
-      menu: 'Menú',
-      openMenu: 'Abrir menú',
-      closeMenu: 'Cerrar menú'
-    },
-    sections: {
-      experience: 'Experiencia',
-      professionalProjects: 'Proyectos Profesionales',
-      education: 'Educación',
-      personalProjects: 'Proyectos Personales',
-      skills: 'Habilidades Técnicas'
-    },
-    caseStudies: {
-      caseTagLabel: 'Caso real',
-      roleLabel: 'Mi aporte',
-      stackLabel: 'Tecnologías',
-      pageLabel: 'Página',
-      demoLabel: 'Demo'
-    },
-    projects: {
-      projectTagLabel: 'Proyecto personal',
-      ctaLabel: 'Ver en GitHub'
-    },
-    skills: {
-      frontend: 'Frontend',
-      backendData: 'Backend y Datos',
-      aiAutomation: 'AI y Automatización',
-      cloudDevOps: 'Cloud y DevOps'
-    },
-    contact: {
-      emailLabel: 'Correo',
-      phoneLabel: 'Teléfono'
+  ],
+  hero: {
+    name: 'Pablo Buitrago Mejia',
+    role: 'Ingeniero de software. Backends en AWS, facturación y agentes de voz.',
+    lead:
+      'Llevo los sistemas de punta a punta, desde la regla de negocio hasta el despliegue. Hoy construyo la facturación y la analítica de una plataforma de contact center con IA para el sector salud.',
+    location: 'Medellín, Colombia',
+    availability: 'Abierto a roles remotos y proyectos freelance',
+    primaryCta: { href: 'mailto:pbuitragom2@gmail.com', label: 'Escríbeme' },
+    links: [
+      { href: linkedin, label: 'LinkedIn' },
+      { href: github, label: 'GitHub' }
+    ],
+    now: {
+      title: 'Ahora',
+      company: 'Boston Project',
+      items: [
+        { figure: '24', label: 'funciones Lambda en el backend donde construí la facturación mensual' },
+        { figure: '7', label: 'integraciones externas en ese backend, de AWS Billing a WhatsApp' },
+        { figure: '9', label: 'herramientas en el agente de voz que agenda citas (en desarrollo)' }
+      ],
+      linkLabel: 'Ver experiencia'
     }
+  },
+  sections: {
+    experience: 'Experiencia',
+    cases: 'Casos',
+    projects: 'Proyectos personales',
+    projectsIntro: 'Lo que construyo por mi cuenta para aprender o resolver algo propio.',
+    skills: 'Habilidades',
+    education: 'Formación',
+    contact: 'Contacto'
   },
   experience: [
     {
-      title: 'Software Development Engineer',
-      company: 'Stellion Tech S.A.S',
-      period: '09/2022 - 01/2026',
-      description:
-        'Ingeniero de Desarrollo: gestioné y optimicé bases de datos, implementé infraestructura como código (IaC) en AWS y desarrollé aplicaciones web con React/Vite + TypeScript. También brindé soporte en despliegues y aseguramiento de calidad.'
-    },
-    {
-      title: 'Freelance',
-      company: 'InGrapes',
-      period: '11/2021 - 12/2021',
-      description:
-        'Desarrollé una landing page enfocada en presentación comercial y captación de clientes, incorporando componentes básicos en React para estructurar secciones reutilizables y mantener una base escalable.'
-    }
-  ] satisfies ExperienceItem[],
-  caseStudies: [
-    {
-      title: 'Plataforma Multiagente',
-      problem:
-        'Desarrollé un chat empresarial donde, desde el registro de cada compañía, se adapta automáticamente el asistente, base de conocimiento y prompts según su negocio. Donde cada empresa puede integrar su Meta Business para hacer uso de sus lineas de WhastApp e Instagram.',
-      role:
-        'Participé en la definición funcional, arquitectura y desarrollo desde cero.',
+      company: 'Boston Project',
+      title: 'Ingeniero de software · Cloud, datos e IA',
+      period: '08/2026 – hoy',
+      current: true,
+      summary:
+        'Plataforma de contact center con IA para clínicas y prestadores de salud: agentes de voz, chat y WhatsApp, y una consola donde los clientes ven reportes, consumo y facturas.',
+      highlights: [
+        'Responsable de la facturación de la plataforma: el cálculo mensual, la revisión y la emisión, del backend a las pantallas.',
+        'Construí la analítica del call center sobre los registros de Amazon Connect.',
+        'Creé el agente de voz de una clínica y ajusté los agentes de otros clientes después de sus primeras jornadas con pacientes.'
+      ],
       stack: [
         'Python',
-        'Vite + React',
-        'AWS',
-        'LLMs',
-        'Knowledge Base + Prompt Engineering'
-      ],
-      outcomes: [
-        'Onboarding empresarial adaptable para configurar automáticamente comportamiento, contexto y reglas del asistente.',
-        'Integración de modelos LLM según necesidad del cliente, manteniendo una experiencia unificada en el chat.',
-        'Flujo robusto de conocimiento + prompts para respuestas alineadas al negocio de cada empresa.'
-      ],
-      repoUrl: 'https://bloxai.co/'
-    },
-    {
-      title: 'App web para gestión y renovación de licencias',
-      problem:
-        'Desarrollé una aplicación web desde cero para una empresa de licencias, con ejecución manual o automática cada 30 días que realiza scraping por cédula mediante una lista para consultar información relevante para el cliente.',
-      role:
-        'Implementé el flujo: producto, backend y automatización para transformar los resultados en reportes empresariales y campañas de contacto.',
-      stack: ['Next.js', 'Docker', 'Web Scraping', 'Automatización', 'AWS', 'ECR', 'ECS', 'Step Functions', 'CloudWatch'],
-      outcomes: [
-        'Generación de reportes para la empresa con información accionable de multas y vencimientos.',
-        'Alertas automáticas por correo a usuarios registrados para renovaciones, pagos de multas y ofertas.',
-        'Uso comercial de la data capturada para impulsar ventas de renovaciones y descuentos.'
+        'AWS Lambda',
+        'SAM',
+        'API Gateway',
+        'DynamoDB',
+        'EventBridge',
+        'SQS',
+        'Athena',
+        'Cognito',
+        'Next.js',
+        'React',
+        'TypeScript',
+        'Playwright'
       ]
     },
     {
-      title: 'Aplicación de empresa de extintores',
-      problem:
-        'La plataforma ya existente requería mantenimiento continuo para corregir errores, estabilizar flujos y agregar nuevas funcionalidades de negocio.',
-      role:
-        'Entré a trabajar sobre código escrito por otros desarrolladores, realizando correcciones, refactorizaciones puntuales y evolución funcional.',
-      stack: ['React', 'AWS'],
-      outcomes: [
-        'Corrección de bugs en módulos críticos del flujo operativo.',
-        'Nuevas funcionalidades implementadas sin interrumpir la operación existente.',
-        'Base de código más estable y mantenible para siguientes iteraciones.'
+      company: 'Stellion Tech S.A.S.',
+      title: 'Software Development Engineer',
+      period: '09/2022 – 01/2026',
+      summary:
+        'Desarrollo de producto para clientes de distintos sectores, desde plataformas nuevas hasta sistemas que ya estaban en operación.',
+      highlights: [
+        'Gestioné y optimicé bases de datos SQL y NoSQL en producción.',
+        'Implementé infraestructura como código en AWS y apoyé los despliegues.',
+        'Desarrollé aplicaciones web con React, Vite y TypeScript.',
+        'Mantuve y amplié, sobre código heredado, las apps de una empresa de extintores y de una de turismo, en React y Flutter, y publiqué sus versiones en Google Play.'
       ],
+      stack: ['React', 'TypeScript', 'Python', 'AWS', 'IaC', 'Docker', 'Flutter', 'SQL / NoSQL']
     },
     {
-      title: 'Aplicación para empresa de turismo',
-      problem:
-        'El producto necesitaba mejorar experiencia de usuario y confiabilidad en web y móvil sobre una base de código ya construida.',
-      role:
-        'Me integré a una solución existente para corregir bugs, extender funcionalidades en React y Flutter, y apoyar el proceso de publicación.',
-      stack: ['React', 'AWS', 'Flutter', 'Google Play Console'],
-      outcomes: [
-        'Mejoras funcionales y de estabilidad en frontend web y móvil.',
-        'Resolución de incidencias heredadas en componentes existentes.',
-        'Publicación y seguimiento de versiones en Play Store con mayor control de calidad.'
-      ],
+      company: 'InGrapes',
+      title: 'Desarrollador freelance',
+      period: '11/2021 – 12/2021',
+      summary:
+        'Landing page comercial orientada a captar clientes, construida con componentes React reutilizables para que fuera fácil de ampliar.',
+      highlights: [],
+      stack: ['React', 'JavaScript', 'CSS']
     }
-  ] satisfies CaseStudyItem[],
+  ],
+  caseGroups: [
+    {
+      title: 'En Boston Project',
+      description: 'Los clientes se describen de forma genérica por confidencialidad.',
+      items: [
+        {
+          title: 'Ciclo de facturación mensual automático',
+          context: 'Plataforma de contact center con IA para el sector salud',
+          problem:
+            'Cada mes había que cobrarle a cada cliente lo que de verdad consumió en AWS y en llamadas, según su contrato, y poder explicar de dónde salía cada cifra.',
+          role: 'Escribí la mayor parte de la facturación: las reglas de negocio, el código y las pruebas.',
+          outcomes: [
+            'Un ciclo mensual que acumula el consumo cada día y genera un borrador que una persona revisa antes de emitir.',
+            'Una vez emitida, la factura ya no se puede modificar y queda con una huella para verificarla.',
+            'El costo de AWS se reparte entre los clientes según su consumo real.',
+            'La factura y su conciliación llegan al cliente en PDF por correo.'
+          ],
+          stack: ['Python', 'AWS Lambda', 'SAM', 'EventBridge', 'SQS', 'DynamoDB', 'S3', 'Cost Explorer', 'Billing API']
+        },
+        {
+          title: 'Consola de clientes y reportería',
+          context: 'Una sola aplicación para el equipo interno y los clientes, separados por permisos',
+          problem:
+            'Los clientes necesitaban ver su consumo, sus llamadas y su facturación sin acceder a la infraestructura, y el equipo interno necesitaba operar la facturación desde la misma herramienta.',
+          role:
+            'Construí las pantallas de facturación, los tableros del call center y de turnos, y la exportación de datos.',
+          outcomes: [
+            'Emisión de facturas en tres pasos y una conciliación lista para imprimir, cubiertas con pruebas end-to-end.',
+            'Detalle del consumo de AWS por cliente y un mapa de calor de los turnos.',
+            'Exportación a Excel de los reportes.'
+          ],
+          stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Recharts', 'Vitest', 'Playwright', 'AWS Amplify']
+        },
+        {
+          title: 'Analítica del call center',
+          context: 'Llamadas atendidas por agentes de voz y asesores humanos',
+          problem:
+            'Los registros de llamadas de Amazon Connect eran demasiado crudos para la reportería diaria de los clientes.',
+          role: 'Diseñé el ETL y los permisos de acceso a los datos.',
+          outcomes: [
+            'Consultas con Athena que solo pueden leer: los permisos de IAM prohíben cualquier escritura.',
+            'Resúmenes por hora en DynamoDB, que se recalculan cada hora y cada noche.',
+            'Son la fuente de los tableros de la consola.'
+          ],
+          stack: ['Amazon Connect', 'Athena', 'AWS Lambda', 'EventBridge', 'DynamoDB', 'IAM']
+        },
+        {
+          title: 'Agente de voz para pacientes de una clínica',
+          context: 'Pacientes que llaman a una clínica para gestionar sus citas',
+          problem:
+            'Los pacientes debían poder consultar, agendar y cancelar citas por teléfono, sin esperar a un asesor, contra los sistemas de agenda y autorizaciones de su aseguradora.',
+          role: 'Creé el proyecto, integré los sistemas externos y diseñé las protecciones.',
+          outcomes: [
+            'Tres agentes que se pasan la llamada entre sí: uno agenda con 9 herramientas, otro responde preguntas generales con una base de conocimiento y otro da recomendaciones.',
+            'Pruebas contra los sistemas reales que solo leen, para no tocar datos de pacientes.',
+            'Las escrituras se simulan y se bloquean ante cualquier error, y una misma petición nunca se ejecuta dos veces.'
+          ],
+          stack: ['Python', 'Amazon Lex V2', 'Amazon Connect', 'Bedrock Knowledge Bases', 'S3 Vectors', 'AWS Lambda', 'DynamoDB', 'SAM'],
+          status: 'En ambiente de desarrollo'
+        }
+      ]
+    },
+    {
+      title: 'Antes de Boston',
+      description: 'Proyectos para clientes en roles anteriores.',
+      items: [
+        {
+          title: 'Plataforma multiagente para empresas',
+          context: 'Chat empresarial con asistentes configurables por compañía',
+          problem:
+            'Cada empresa necesitaba un asistente que hablara de su negocio, con su base de conocimiento, y que atendiera por sus propias líneas de WhatsApp e Instagram.',
+          role: 'Participé en la definición funcional, la arquitectura y el desarrollo desde cero.',
+          outcomes: [
+            'Onboarding que configura el asistente, el contexto y las reglas a partir del registro de la empresa.',
+            'Modelos LLM elegidos según la necesidad del cliente, con una sola experiencia de chat.',
+            'Integración con Meta Business para WhatsApp e Instagram.'
+          ],
+          stack: ['Python', 'React', 'Vite', 'AWS', 'LLMs', 'RAG'],
+          url: 'https://bloxai.co/'
+        },
+        {
+          title: 'Gestión y renovación de licencias',
+          context: 'Empresa de gestión de licencias',
+          problem:
+            'La empresa quería saber, para su lista de clientes, quién tenía multas o licencias por vencer, sin consultarlo a mano.',
+          role: 'Construí el producto completo: aplicación, backend y la automatización programada.',
+          outcomes: [
+            'Consulta automática cada 30 días o bajo demanda, a partir de una lista de documentos.',
+            'Reportes con multas y vencimientos para el equipo comercial.',
+            'Alertas por correo para renovaciones, pagos de multas y ofertas.'
+          ],
+          stack: ['Next.js', 'Docker', 'Web scraping', 'AWS ECS', 'ECR', 'Step Functions', 'CloudWatch']
+        }
+      ]
+    }
+  ],
   projects: [
     {
-      title: 'Predicción de Consumo de Sustancias Psicoactivas',
+      title: 'Predicción de consumo de sustancias psicoactivas',
       description:
-        'Proyecto de ML con datos ENCSPA 2019 (DANE): EDA, preprocesamiento, modelado, optimización con Optuna, interpretabilidad con SHAP y app en Streamlit para predicción individual y por lotes.',
+        'Machine learning sobre la encuesta ENCSPA 2019 del DANE: análisis exploratorio, preprocesamiento, modelado, optimización con Optuna, interpretabilidad con SHAP y una app en Streamlit para predicción individual y por lotes.',
+      stack: ['Python', 'scikit-learn', 'Optuna', 'SHAP', 'Streamlit'],
       href: 'https://github.com/LegalmentePablo/am-pa-drugs-prediction'
     },
     {
-      title: 'Nos - Asistente Local Híbrido (Windows)',
+      title: 'Nos, asistente local para Windows',
       description:
-        'MVP local con arquitectura rules-first y fallback LLM con Ollama: acciones seguras en Windows, modo voz opcional (STT), logs JSON y flujo de calidad con Ruff, Mypy y Pytest.',
+        'Asistente híbrido que resuelve por reglas y recurre a un LLM local con Ollama solo cuando hace falta. Acciones en lista blanca, modo de prueba, voz opcional y logs en JSON.',
+      stack: ['Python', 'Ollama', 'Ruff', 'Mypy', 'Pytest'],
       href: 'https://github.com/LegalmentePablo/Nos'
-    }
-  ] satisfies ProjectItem[],
-  education: [
-    {
-      degree: 'Especialización en Ciencia de Datos e Inteligencia Artificial',
-      institution: 'Universidad de Medellín',
-      period: '07/2025 - Pausado'
     },
+    {
+      title: 'Sistema de gestión de tareas',
+      description:
+        'Aplicación fullstack de tareas y reportes: API en Symfony con autenticación JWT y exportación a PDF, consumida por una SPA en Vue 3.',
+      stack: ['PHP', 'Symfony', 'Vue 3', 'Pinia', 'MySQL'],
+      href: 'https://github.com/LegalmentePablo/task-management-system'
+    },
+    {
+      title: 'Driver Logistics',
+      description:
+        'App Android de entregas pensada para trabajar sin conexión: Room como fuente de verdad, actualizaciones optimistas y sincronización en segundo plano.',
+      stack: ['Kotlin', 'Jetpack Compose', 'Room', 'WorkManager'],
+      href: 'https://github.com/LegalmentePablo/driverLogistics'
+    }
+  ],
+  skills: [
+    {
+      title: 'Backend y cloud',
+      items: ['Python', 'Node.js', 'AWS Lambda', 'API Gateway', 'SAM / CloudFormation', 'DynamoDB', 'S3', 'EventBridge', 'SQS', 'Step Functions', 'ECS / ECR', 'Cognito', 'Docker']
+    },
+    {
+      title: 'Frontend y móvil',
+      items: ['TypeScript', 'React', 'Next.js', 'Vite', 'Tailwind CSS', 'Astro', 'Flutter']
+    },
+    {
+      title: 'IA y agentes',
+      items: ['Amazon Bedrock', 'Lex V2', 'Amazon Connect', 'RAG / Knowledge Bases', 'LLMs', 'Diseño de prompts', 'Orquestación de agentes']
+    },
+    {
+      title: 'Datos y calidad',
+      items: ['SQL / NoSQL', 'Athena', 'ETL', 'scikit-learn', 'pytest', 'Vitest', 'Playwright', 'Git']
+    }
+  ],
+  education: [
     {
       degree: 'Ingeniería de Sistemas',
       institution: 'Universidad de Medellín',
-      period: '08/2018 - 12/2025'
+      period: '2018 – 2025'
+    },
+    {
+      degree: 'Especialización en Ciencia de Datos e Inteligencia Artificial',
+      institution: 'Universidad de Medellín',
+      period: '2025 · en pausa'
     }
-  ] satisfies EducationItem[],
-  skills: [
-    'Python',
-    'LLMs',
-    'Flutter',
-    'JavaScript',
-    'Node.js',
-    'TypeScript',
-    'SQL / NoSQL',
-    'Agent orchestration',
-    'Prompt engineering',
-    'AWS',
-    'IaC',
-    'Docker',
-    'Git',
-    'React'
   ],
   contact: {
-    title: 'Contacto',
+    heading: '¿Construimos algo?',
     message:
-      'Si estás construyendo un producto y necesitas fortalecer backend, datos o cloud, conversemos. Respondo en menos de 24 horas.',
+      'Si tu equipo necesita a alguien que lleve un backend, una integración o un agente de IA hasta producción, escríbeme. Respondo en menos de 24 horas.',
     email: 'pbuitragom2@gmail.com',
-    phone: '+57 3012195869',
+    phone: '+57 301 219 5869',
+    emailLabel: 'Correo',
+    phoneLabel: 'Teléfono',
     links: [
-      { href: 'https://www.linkedin.com/in/pbuitragom/', label: 'LinkedIn', icon: '/linkedin-icon.svg' },
-      { href: 'https://github.com/LegalmentePablo', label: 'GitHub', icon: '/github-icon.svg' }
-    ] satisfies ContactLink[]
-  }
-} as const;
+      { href: linkedin, label: 'LinkedIn' },
+      { href: github, label: 'GitHub' }
+    ]
+  },
+  footer: 'Diseñado y construido por Pablo Buitrago Mejia.'
+};

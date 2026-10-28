@@ -1,136 +1,348 @@
 ---
 import ThemeSwitcher from './ThemeSwitcher.astro';
-import './Header.css';
-import type { NavLink } from '../data/portfolio';
+import Icon from './Icon.astro';
+import type { Lang, NavLink, PortfolioData } from '../data/portfolio';
 
 interface Props {
+	name: string;
 	links: NavLink[];
-	currentLang: 'es' | 'en';
-	menuLabel: string;
-	openMenuLabel: string;
-	closeMenuLabel: string;
+	lang: Lang;
+	ui: PortfolioData['ui'];
 }
 
-const { links, currentLang, menuLabel, openMenuLabel, closeMenuLabel } = Astro.props;
+const { name, links, lang, ui } = Astro.props;
+const languages = [
+	{ code: 'es', href: '/', label: 'ES', title: 'Español' },
+	{ code: 'en', href: '/en/', label: 'EN', title: 'English' }
+] as const;
 ---
-<header
-	class="site-header"
-	data-open-menu-label={openMenuLabel}
-	data-close-menu-label={closeMenuLabel}
->
-	<button
-		type="button"
-		class="menu-toggle"
-		aria-label={openMenuLabel}
-		aria-expanded="false"
-		aria-controls="mobile-nav"
-		data-menu-toggle
-	>
-		<span></span>
-		<span></span>
-		<span></span>
-	</button>
 
-	<nav class="desktop-nav" aria-label="Navegación principal">
-		<ul>
-			{
-				links.map((link) => (
-					<li><a href={link.href}>{link.label}</a></li>
-				))
-			}
-		</ul>
-	</nav>
+<header class="site-header" data-header>
+	<div class="container header-inner">
+		<a class="wordmark" href="#top">{name}</a>
 
-	<div class="header-actions">
-		<nav class="lang-switch" aria-label="Language switcher">
-			<a href="/" class={currentLang === 'es' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'es' ? 'page' : undefined}>ES</a>
-			<a href="/en/" class={currentLang === 'en' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'en' ? 'page' : undefined}>EN</a>
+		<nav class="nav" aria-label={ui.mainNavLabel}>
+			<ul class="nav-list" id="site-nav" data-nav>
+				{
+					links.map((link) => (
+						<li>
+							<a href={link.href} data-nav-link>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
 		</nav>
-		<ThemeSwitcher />
+
+		<div class="actions">
+			<ul class="lang" aria-label={ui.langSwitchLabel}>
+				{
+					languages.map((item) => (
+						<li>
+							<a
+								href={item.href}
+								hreflang={item.code}
+								lang={item.code}
+								title={item.title}
+								aria-current={item.code === lang ? 'page' : undefined}
+							>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<ThemeSwitcher label={ui.themeToggle} />
+			<button
+				type="button"
+				class="menu-button"
+				aria-expanded="false"
+				aria-controls="site-nav"
+				aria-label={ui.openMenu}
+				data-open-label={ui.openMenu}
+				data-close-label={ui.closeMenu}
+				data-menu-button
+			>
+				<Icon name="menu" size={18} class="icon-open" />
+				<Icon name="close" size={18} class="icon-close" />
+			</button>
+		</div>
 	</div>
 </header>
 
-<div class="mobile-overlay" data-mobile-overlay hidden></div>
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--bg);
+		border-bottom: 1px solid transparent;
+		transition: border-color 0.2s ease;
+	}
 
-<nav id="mobile-nav" class="mobile-nav" aria-label="Menú móvil" aria-hidden="true" data-mobile-nav>
-	<div class="mobile-nav-top">
-		<strong>{menuLabel}</strong>
-		<button type="button" class="close-menu" aria-label={closeMenuLabel} data-menu-close>X</button>
-	</div>
-	<ul>
-		{
-			links.map((link) => (
-				<li><a href={link.href} class="mobile-nav-link" data-mobile-link>{link.label}</a></li>
-			))
+	.site-header.is-scrolled {
+		border-bottom-color: var(--line);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		height: var(--header-h);
+	}
+
+	.wordmark {
+		font-weight: 700;
+		font-size: 0.975rem;
+		letter-spacing: -0.01em;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.nav {
+		margin-left: auto;
+	}
+
+	.nav-list {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.nav-list a {
+		position: relative;
+		display: block;
+		padding: 0.4rem 0.7rem;
+		color: var(--ink-2);
+		font-size: 0.925rem;
+		text-decoration: none;
+		border-radius: 6px;
+		transition: color 0.15s ease;
+	}
+
+	.nav-list a:hover {
+		color: var(--ink);
+	}
+
+	.nav-list a[aria-current='true'] {
+		color: var(--ink);
+	}
+
+	.nav-list a::after {
+		content: '';
+		position: absolute;
+		left: 0.7rem;
+		right: 0.7rem;
+		bottom: -0.55rem;
+		height: 2px;
+		background: var(--accent);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.35s var(--ease-out);
+	}
+
+	.nav-list a[aria-current='true']::after {
+		transform: scaleX(1);
+	}
+
+	.actions {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.lang {
+		display: flex;
+		padding: 2px;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+	}
+
+	.lang a {
+		display: block;
+		padding: 0.15rem 0.5rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--ink-3);
+		text-decoration: none;
+		border-radius: 6px;
+	}
+
+	.lang a:hover {
+		color: var(--ink);
+	}
+
+	.lang a[aria-current='page'] {
+		background: var(--bg-sunk);
+		color: var(--ink);
+	}
+
+	.menu-button {
+		display: none;
+		place-items: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		padding: 0;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background: transparent;
+		color: var(--ink);
+		cursor: pointer;
+	}
+
+	.menu-button :global(svg) {
+		grid-area: 1 / 1;
+	}
+
+	.menu-button :global(.icon-close),
+	.menu-button[aria-expanded='true'] :global(.icon-open) {
+		display: none;
+	}
+
+	.menu-button[aria-expanded='true'] :global(.icon-close) {
+		display: block;
+	}
+
+	@media (max-width: 860px) {
+		.header-inner {
+			gap: 1rem;
 		}
-	</ul>
-	<div class="mobile-lang-switch" aria-label="Language switcher">
-		<a href="/" class={currentLang === 'es' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'es' ? 'page' : undefined}>ES</a>
-		<a href="/en/" class={currentLang === 'en' ? 'lang-link is-active' : 'lang-link'} aria-current={currentLang === 'en' ? 'page' : undefined}>EN</a>
-	</div>
-</nav>
+
+		.actions {
+			margin-left: auto;
+			gap: 0.5rem;
+		}
+
+		.menu-button {
+			display: inline-grid;
+		}
+
+		.nav {
+			margin: 0;
+		}
+
+		.nav-list {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			flex-direction: column;
+			gap: 0;
+			padding: 0.5rem var(--gutter) 1rem;
+			background: var(--bg);
+			border-bottom: 1px solid var(--line);
+			visibility: hidden;
+			opacity: 0;
+			transform: translateY(-6px);
+			transition:
+				opacity 0.2s ease,
+				transform 0.25s var(--ease-out),
+				visibility 0s linear 0.25s;
+		}
+
+		.nav-list.is-open {
+			visibility: visible;
+			opacity: 1;
+			transform: none;
+			transition:
+				opacity 0.2s ease,
+				transform 0.25s var(--ease-out);
+		}
+
+		.nav-list a {
+			padding: 0.8rem 0;
+			font-size: 1.05rem;
+			border-bottom: 1px solid var(--line);
+			border-radius: 0;
+		}
+
+		.nav-list li:last-child a {
+			border-bottom: 0;
+		}
+
+		.nav-list a::after {
+			display: none;
+		}
+
+		.nav-list a[aria-current='true'] {
+			color: var(--accent);
+		}
+	}
+
+	@media (max-width: 380px) {
+		.wordmark {
+			font-size: 0.9rem;
+		}
+	}
+</style>
 
 <script>
-	const siteHeader = document.querySelector<HTMLElement>('.site-header');
-	const openLabel = siteHeader?.dataset.openMenuLabel ?? 'Open menu';
-	const closeLabel = siteHeader?.dataset.closeMenuLabel ?? 'Close menu';
+	const header = document.querySelector<HTMLElement>('[data-header]');
+	const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+	const navList = document.querySelector<HTMLElement>('[data-nav]');
+	const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
 
-	const toggleButton = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-	const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
-	const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
-	const overlay = document.querySelector<HTMLElement>('[data-mobile-overlay]');
-	const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('[data-mobile-link]');
+	const setMenu = (open: boolean) => {
+		if (!menuButton || !navList) return;
+		menuButton.setAttribute('aria-expanded', String(open));
+		menuButton.setAttribute(
+			'aria-label',
+			(open ? menuButton.dataset.closeLabel : menuButton.dataset.openLabel) ?? ''
+		);
+		navList.classList.toggle('is-open', open);
+	};
 
-	const syncActiveMobileLink = () => {
-		const currentHash = window.location.hash || '#inicio';
+	menuButton?.addEventListener('click', () => {
+		setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
+	});
 
-		mobileLinks.forEach((link) => {
-			const isActive = link.getAttribute('href') === currentHash;
-			link.classList.toggle('is-active', isActive);
-			if (isActive) {
-				link.setAttribute('aria-current', 'page');
+	navLinks.forEach((link) => link.addEventListener('click', () => setMenu(false)));
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') {
+			setMenu(false);
+			menuButton.focus();
+		}
+	});
+
+	document.addEventListener('click', (event) => {
+		if (!header || header.contains(event.target as Node)) return;
+		setMenu(false);
+	});
+
+	window.matchMedia('(min-width: 861px)').addEventListener('change', (event) => {
+		if (event.matches) setMenu(false);
+	});
+
+	const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+	onScroll();
+	window.addEventListener('scroll', onScroll, { passive: true });
+
+	const sections = navLinks
+		.map((link) => document.querySelector<HTMLElement>(link.hash))
+		.filter((section): section is HTMLElement => section !== null);
+
+	const setCurrent = (id: string | null) => {
+		navLinks.forEach((link) => {
+			if (link.hash === `#${id}`) {
+				link.setAttribute('aria-current', 'true');
 			} else {
 				link.removeAttribute('aria-current');
 			}
 		});
 	};
 
-	const setMenuState = (isOpen: boolean) => {
-		if (!toggleButton || !mobileNav || !overlay) return;
-
-		toggleButton.setAttribute('aria-expanded', String(isOpen));
-		toggleButton.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
-		toggleButton.classList.toggle('is-open', isOpen);
-		mobileNav.setAttribute('aria-hidden', String(!isOpen));
-		mobileNav.classList.toggle('is-open', isOpen);
-		overlay.hidden = !isOpen;
-		document.documentElement.classList.toggle('menu-open', isOpen);
-	};
-
-	toggleButton?.addEventListener('click', () => {
-		const isOpen = toggleButton.getAttribute('aria-expanded') === 'true';
-		setMenuState(!isOpen);
-	});
-
-	closeButton?.addEventListener('click', () => setMenuState(false));
-	overlay?.addEventListener('click', () => setMenuState(false));
-
-	mobileLinks.forEach((link) => {
-		link.addEventListener('click', () => {
-			syncActiveMobileLink();
-			setMenuState(false);
-		});
-	});
-
-	window.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape') setMenuState(false);
-	});
-
-	window.addEventListener('resize', () => {
-		if (window.innerWidth > 900) setMenuState(false);
-	});
-
-	window.addEventListener('hashchange', syncActiveMobileLink);
-
-	syncActiveMobileLink();
+	if ('IntersectionObserver' in window && sections.length > 0) {
+		const visible = new Map<string, boolean>();
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => visible.set(entry.target.id, entry.isIntersecting));
+				const current = sections.find((section) => visible.get(section.id));
+				setCurrent(current ? current.id : null);
+			},
+			{ rootMargin: '-30% 0px -60% 0px' }
+		);
+		sections.forEach((section) => observer.observe(section));
+	}
 </script>

@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import HeroSection from './sections/HeroSection.astro';
+import ExperienceSection from './sections/ExperienceSection.astro';
+import CaseStudiesSection from './sections/CaseStudiesSection.astro';
+import ProjectsSection from './sections/ProjectsSection.astro';
+import SkillsSection from './sections/SkillsSection.astro';
+import EducationSection from './sections/EducationSection.astro';
+import ContactSection from './sections/ContactSection.astro';
+import type { PortfolioData } from '../data/portfolio';
+
+interface Props {
+	data: PortfolioData;
+}
+
+const { data } = Astro.props;
+---
+
+<Layout
+	title={data.meta.title}
+	description={data.meta.description}
+	lang={data.lang}
+	siteUrl={data.meta.siteUrl}
+	ogImagePath={data.meta.ogImagePath}
+>
+	<a class="skip-link" href="#contenido">{data.ui.skipLink}</a>
+	<Header name={data.hero.name} links={data.navigation} lang={data.lang} ui={data.ui} />
+	<main id="contenido">
+		<HeroSection hero={data.hero} />
+		<ExperienceSection
+			title={data.sections.experience}
+			items={data.experience}
+			currentLabel={data.ui.currentLabel}
+		/>
+		<CaseStudiesSection title={data.sections.cases} groups={data.caseGroups} ui={data.ui} />
+		<ProjectsSection
+			title={data.sections.projects}
+			intro={data.sections.projectsIntro}
+			items={data.projects}
+			sourceLabel={data.ui.sourceLabel}
+		/>
+		<SkillsSection title={data.sections.skills} groups={data.skills} />
+		<EducationSection title={data.sections.education} items={data.education} />
+		<ContactSection title={data.sections.contact} contact={data.contact} ui={data.ui} footer={data.footer} />
+	</main>
+</Layout>
+
+<style>
+	.skip-link {
+		position: absolute;
+		top: 0.5rem;
+		left: 0.5rem;
+		z-index: 100;
+		padding: 0.6rem 1rem;
+		background: var(--ink);
+		color: var(--bg);
+		font-weight: 600;
+		border-radius: 8px;
+		transform: translateY(-150%);
+		transition: transform 0.2s var(--ease-out);
+	}
+
+	.skip-link:focus {
+		transform: none;
+	}
+</style>
