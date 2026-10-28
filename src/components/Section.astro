@@ -13,6 +13,7 @@ const headingId = `${id}-title`;
 	<header class="section-head">
 		<h2 id={headingId}>{title}</h2>
 		{intro && <p class="section-intro">{intro}</p>}
+		<slot name="head" />
 	</header>
 	<div class="section-body">
 		<slot />
@@ -70,7 +71,7 @@ const headingId = `${id}-title`;
 
 	@media (max-width: 760px) {
 		.section {
-			grid-template-columns: 1fr;
+			grid-template-columns: minmax(0, 1fr);
 			gap: 1.25rem;
 		}
 

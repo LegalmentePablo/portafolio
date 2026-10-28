@@ -33,6 +33,7 @@ export const portfolioDataEn: PortfolioData = {
   navigation: [
     { href: '#experiencia', label: 'Experience' },
     { href: '#casos', label: 'Case studies' },
+    { href: '#leoapp', label: 'LeoApp' },
     { href: '#proyectos', label: 'Projects' },
     { href: '#habilidades', label: 'Skills' },
     { href: '#contacto', label: 'Contact' }
@@ -216,6 +217,60 @@ export const portfolioDataEn: PortfolioData = {
       ]
     }
   ],
+  featured: {
+    title: 'LeoApp',
+    label: 'Personal project · private code',
+    heading: 'The control panel for my PC',
+    description:
+      'A Windows desktop app I built for my day-to-day work. It transcribes and summarizes my meetings, pulls out my action items, triages email, writes scripts and keeps the machine up to date. Everything runs on local models on my GPU: nothing leaves the PC.',
+    galleryLabel: 'LeoApp screens',
+    mascot: {
+      src: '/leoapp/leo.webp',
+      alt: 'Leo, an orange Persian cat, looking closely at the camera.',
+      caption: 'It is named after Leo, my cat, whose photo is also the app icon.'
+    },
+    screenshots: [
+      {
+        src: '/leoapp/inicio.webp',
+        label: 'Home',
+        alt: 'LeoApp home screen showing GPU status, disks, scheduled tasks and transcription models.',
+        caption: 'Machine status at a glance: GPU, disks, tasks, models and alerts. Game mode frees the GPU.'
+      },
+      {
+        src: '/leoapp/transcribir.webp',
+        label: 'Transcribe',
+        alt: 'LeoApp Transcribe screen with audio selection, speech models and the meeting summary.',
+        caption: 'Two speech models on the GPU plus a merged version; then a local model writes the summary with decisions and action items.'
+      },
+      {
+        src: '/leoapp/pendientes.webp',
+        label: 'Action items',
+        alt: 'LeoApp action items screen with tasks extracted from meetings, their date and the minute they were said.',
+        caption: 'Action items come straight from each meeting summary, with the exact minute they were said.'
+      },
+      {
+        src: '/leoapp/scripts.webp',
+        label: 'Scripts',
+        alt: 'LeoApp Scripts screen with PowerShell scripts, their schedule and actions to test, run or edit with AI.',
+        caption: 'I describe the task, a local model writes the PowerShell, it is checked for risky commands and scheduled in Windows.'
+      },
+      {
+        src: '/leoapp/modelos.webp',
+        label: 'Models',
+        alt: 'LeoApp Models screen listing installed Hugging Face and Ollama models and their size.',
+        caption: 'Hugging Face and Ollama models: size, whether they fit on the GPU, download and delete.'
+      }
+    ],
+    highlights: [
+      'Detects when an OBS recording finishes and transcribes and summarizes it on its own.',
+      'You can ask a meeting a question: the model answers only from what was said and cites the minute.',
+      'Triages email with a local model that suggests what to delete, what to answer and which job offers fit; it never sends anything.',
+      'Updates installed programs without a permission prompt every time, through a Windows task with narrowly scoped rights.',
+      'Weekly backup to Google Drive and automatic restore on a freshly formatted PC.'
+    ],
+    stack: ['Python', 'NiceGUI', 'pywebview', 'Ollama', 'Hugging Face Transformers', 'PowerShell', 'uv', 'pytest'],
+    note: 'Screenshots use sample data instead of real meetings and emails. The interface is in Spanish.'
+  },
   projects: [
     {
       title: 'Psychoactive substance use prediction',

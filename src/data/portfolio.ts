@@ -44,6 +44,30 @@ export interface ProjectItem {
   href: string;
 }
 
+export interface Screenshot {
+  src: string;
+  label: string;
+  alt: string;
+  caption: string;
+}
+
+export interface FeaturedProject {
+  title: string;
+  label: string;
+  heading: string;
+  description: string;
+  screenshots: Screenshot[];
+  highlights: string[];
+  stack: string[];
+  note: string;
+  galleryLabel: string;
+  mascot: {
+    src: string;
+    alt: string;
+    caption: string;
+  };
+}
+
 export interface SkillGroup {
   title: string;
   items: string[];
@@ -113,6 +137,7 @@ export interface PortfolioData {
   };
   experience: ExperienceItem[];
   caseGroups: CaseGroup[];
+  featured: FeaturedProject;
   projects: ProjectItem[];
   skills: SkillGroup[];
   education: EducationItem[];
@@ -161,6 +186,7 @@ export const portfolioData: PortfolioData = {
   navigation: [
     { href: '#experiencia', label: 'Experiencia' },
     { href: '#casos', label: 'Casos' },
+    { href: '#leoapp', label: 'LeoApp' },
     { href: '#proyectos', label: 'Proyectos' },
     { href: '#habilidades', label: 'Habilidades' },
     { href: '#contacto', label: 'Contacto' }
@@ -346,6 +372,60 @@ export const portfolioData: PortfolioData = {
       ]
     }
   ],
+  featured: {
+    title: 'LeoApp',
+    label: 'Proyecto personal · código privado',
+    heading: 'El panel de control de mi PC',
+    description:
+      'Una app de escritorio para Windows que construí para mi día a día. Transcribe y resume mis reuniones, saca mis pendientes, revisa el correo, escribe scripts y mantiene el equipo al día. Todo corre con modelos locales en mi GPU: nada sale del PC.',
+    galleryLabel: 'Pantallas de LeoApp',
+    mascot: {
+      src: '/leoapp/leo.webp',
+      alt: 'Leo, un gato persa naranja, mirando de cerca a la cámara.',
+      caption: 'Se llama LeoApp por Leo, mi gato. Su foto también es el icono de la app.'
+    },
+    screenshots: [
+      {
+        src: '/leoapp/inicio.webp',
+        label: 'Inicio',
+        alt: 'Pantalla de inicio de LeoApp con el estado de la GPU, los discos, las tareas programadas y los modelos de transcripción.',
+        caption: 'El estado del equipo de un vistazo: GPU, discos, tareas, modelos y alertas. El modo juego libera la GPU.'
+      },
+      {
+        src: '/leoapp/transcribir.webp',
+        label: 'Transcribir',
+        alt: 'Pantalla Transcribir de LeoApp con la elección de audio, modelos de voz y el resumen de la reunión.',
+        caption: 'Dos modelos de voz en la GPU y una versión combinada; después, un modelo local escribe el resumen con decisiones y pendientes.'
+      },
+      {
+        src: '/leoapp/pendientes.webp',
+        label: 'Pendientes',
+        alt: 'Pantalla Pendientes de LeoApp con tareas extraídas de reuniones, su fecha y el minuto en que se dijeron.',
+        caption: 'Los pendientes salen solos del resumen de cada reunión, con el minuto exacto en que se dijeron.'
+      },
+      {
+        src: '/leoapp/scripts.webp',
+        label: 'Scripts',
+        alt: 'Pantalla Scripts de LeoApp con scripts de PowerShell, su horario y acciones para probar, ejecutar o editar con IA.',
+        caption: 'Describo la tarea, un modelo local escribe el PowerShell, se revisa por riesgos y queda programado en Windows.'
+      },
+      {
+        src: '/leoapp/modelos.webp',
+        label: 'Modelos',
+        alt: 'Pantalla Modelos de LeoApp con los modelos de Hugging Face y de Ollama instalados y su tamaño.',
+        caption: 'Modelos de Hugging Face y Ollama: tamaño, si caben en la GPU, descargar y borrar.'
+      }
+    ],
+    highlights: [
+      'Detecta cuándo termina una grabación de OBS y la transcribe y resume sola.',
+      'Se le puede preguntar a una reunión: el modelo responde solo con lo que se dijo y cita el minuto.',
+      'Revisa el correo con un modelo local que propone qué tirar, qué responder y qué ofertas de trabajo encajan; nunca envía nada.',
+      'Actualiza los programas sin pedir permisos cada vez, mediante una tarea de Windows con permisos acotados.',
+      'Respaldo semanal en Google Drive y restauración automática en un PC recién formateado.'
+    ],
+    stack: ['Python', 'NiceGUI', 'pywebview', 'Ollama', 'Hugging Face Transformers', 'PowerShell', 'uv', 'pytest'],
+    note: 'Las capturas usan datos de ejemplo en lugar de reuniones y correos reales.'
+  },
   projects: [
     {
       title: 'Predicción de consumo de sustancias psicoactivas',

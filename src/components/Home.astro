@@ -4,6 +4,7 @@ import Header from './Header.astro';
 import HeroSection from './sections/HeroSection.astro';
 import ExperienceSection from './sections/ExperienceSection.astro';
 import CaseStudiesSection from './sections/CaseStudiesSection.astro';
+import FeaturedProjectSection from './sections/FeaturedProjectSection.astro';
 import ProjectsSection from './sections/ProjectsSection.astro';
 import SkillsSection from './sections/SkillsSection.astro';
 import EducationSection from './sections/EducationSection.astro';
@@ -34,6 +35,7 @@ const { data } = Astro.props;
 			currentLabel={data.ui.currentLabel}
 		/>
 		<CaseStudiesSection title={data.sections.cases} groups={data.caseGroups} ui={data.ui} />
+		<FeaturedProjectSection project={data.featured} />
 		<ProjectsSection
 			title={data.sections.projects}
 			intro={data.sections.projectsIntro}

@@ -1,0 +1,272 @@
+---
+import Section from '../Section.astro';
+import type { FeaturedProject } from '../../data/portfolio';
+
+interface Props {
+	project: FeaturedProject;
+}
+
+const { project } = Astro.props;
+---
+
+<Section id="leoapp" title={project.title} intro={project.label}>
+	<figure class="mascot" slot="head">
+		<img src={project.mascot.src} alt={project.mascot.alt} width="512" height="512" loading="lazy" decoding="async" />
+		<figcaption>{project.mascot.caption}</figcaption>
+	</figure>
+	<h3 class="heading">{project.heading}</h3>
+	<p class="description">{project.description}</p>
+
+	<div class="gallery" data-gallery>
+		<div class="tabs" role="tablist" aria-label={project.galleryLabel}>
+			{
+				project.screenshots.map((shot, index) => (
+					<button
+						type="button"
+						role="tab"
+						id={`leoapp-tab-${index}`}
+						aria-controls={`leoapp-panel-${index}`}
+						aria-selected={index === 0 ? 'true' : 'false'}
+						tabindex={index === 0 ? 0 : -1}
+						data-gallery-tab
+					>
+						{shot.label}
+					</button>
+				))
+			}
+		</div>
+
+		{
+			project.screenshots.map((shot, index) => (
+				<figure
+					class="shot"
+					role="tabpanel"
+					id={`leoapp-panel-${index}`}
+					aria-labelledby={`leoapp-tab-${index}`}
+					hidden={index !== 0}
+					data-gallery-panel
+				>
+					<a class="frame" href={shot.src} target="_blank" rel="noopener">
+						<img
+							src={shot.src}
+							alt={shot.alt}
+							width="1440"
+							height="900"
+							loading="lazy"
+							decoding="async"
+						/>
+					</a>
+					<figcaption>{shot.caption}</figcaption>
+				</figure>
+			))
+		}
+	</div>
+
+	<ul class="highlights">
+		{project.highlights.map((item) => <li>{item}</li>)}
+	</ul>
+
+	<ul class="stack-line">
+		{project.stack.map((tech) => <li>{tech}</li>)}
+	</ul>
+
+	<p class="note">{project.note}</p>
+</Section>
+
+<style>
+	.mascot {
+		margin: 1.5rem 0 0;
+	}
+
+	.mascot img {
+		display: block;
+		width: 100%;
+		max-width: 11rem;
+		height: auto;
+	}
+
+	.mascot figcaption {
+		max-width: 13rem;
+		margin-top: 0.75rem;
+		color: var(--ink-2);
+		font-size: 0.9rem;
+		line-height: 1.45;
+	}
+
+	@media (max-width: 760px) {
+		.mascot {
+			display: grid;
+			grid-template-columns: 5.5rem minmax(0, 1fr);
+			gap: 1rem;
+			align-items: center;
+			margin-top: 1rem;
+		}
+
+		.mascot figcaption {
+			max-width: none;
+			margin-top: 0;
+		}
+	}
+
+	.heading {
+		font-size: 1.3rem;
+		letter-spacing: -0.02em;
+	}
+
+	.description {
+		max-width: 44rem;
+		margin-top: 0.6rem;
+		color: var(--ink-2);
+	}
+
+	.gallery {
+		margin-top: 1.75rem;
+	}
+
+	.tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+		margin-bottom: 0.9rem;
+	}
+
+	[role='tab'] {
+		flex: none;
+		min-height: 2.25rem;
+		padding: 0 0.85rem;
+		border: 1px solid transparent;
+		border-radius: 8px;
+		background: transparent;
+		color: var(--ink-3);
+		font: inherit;
+		font-size: 0.925rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	[role='tab']:hover {
+		color: var(--ink);
+	}
+
+	[role='tab'][aria-selected='true'] {
+		background: var(--bg-sunk);
+		border-color: var(--line);
+		color: var(--ink);
+	}
+
+	.frame {
+		display: block;
+		overflow: hidden;
+		border: 1px solid var(--line-strong);
+		border-radius: 8px;
+		background: var(--bg-sunk);
+		aspect-ratio: 1440 / 900;
+	}
+
+	.frame img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top left;
+	}
+
+	.shot:not([hidden]) .frame img {
+		animation: shot-in 0.36s var(--ease-out);
+	}
+
+	@keyframes shot-in {
+		from {
+			opacity: 0.4;
+		}
+	}
+
+	figure {
+		margin: 0;
+	}
+
+	figcaption {
+		max-width: 44rem;
+		margin-top: 0.75rem;
+		color: var(--ink-2);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.highlights {
+		max-width: 44rem;
+		margin-top: 1.75rem;
+	}
+
+	.highlights li {
+		position: relative;
+		padding-left: 1.25rem;
+		font-size: 1rem;
+		line-height: 1.55;
+	}
+
+	.highlights li + li {
+		margin-top: 0.55rem;
+	}
+
+	.highlights li::before {
+		content: '';
+		position: absolute;
+		left: 0.15rem;
+		top: 0.72em;
+		width: 0.45rem;
+		height: 1px;
+		background: var(--ink-3);
+	}
+
+	.stack-line {
+		margin-top: 1.1rem;
+	}
+
+	.note {
+		margin-top: 0.75rem;
+		color: var(--ink-3);
+		font-size: 0.85rem;
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
+		const tabs = Array.from(gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-tab]'));
+		const panels = Array.from(gallery.querySelectorAll<HTMLElement>('[data-gallery-panel]'));
+
+		const select = (index: number, focus = false) => {
+			tabs.forEach((tab, i) => {
+				const active = i === index;
+				tab.setAttribute('aria-selected', String(active));
+				tab.tabIndex = active ? 0 : -1;
+				panels[i].hidden = !active;
+			});
+			if (focus) tabs[index].focus();
+		};
+
+		tabs.forEach((tab, index) => {
+			tab.addEventListener('click', () => select(index));
+			tab.addEventListener('keydown', (event) => {
+				const last = tabs.length - 1;
+				const next =
+					event.key === 'ArrowRight'
+						? (index + 1) % tabs.length
+						: event.key === 'ArrowLeft'
+							? (index - 1 + tabs.length) % tabs.length
+							: event.key === 'Home'
+								? 0
+								: event.key === 'End'
+									? last
+									: -1;
+				if (next === -1) return;
+				event.preventDefault();
+				select(next, true);
+			});
+		});
+	});
+</script>
